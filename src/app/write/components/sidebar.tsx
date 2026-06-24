@@ -1,6 +1,8 @@
 "use client";
 
 import { X } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { cardReveal, motionViewport } from "@/lib/motion-presets";
 import { useWriteStore } from "../stores/write-store";
 
 function splitTags(value: string) {
@@ -11,6 +13,7 @@ function splitTags(value: string) {
 }
 
 export function WriteSidebar() {
+  const reducedMotion = useReducedMotion();
   const {
     slug,
     originalSlug,
@@ -28,7 +31,11 @@ export function WriteSidebar() {
   } = useWriteStore();
 
   return (
-    <aside className="write-sidebar">
+    <motion.aside
+      className="write-sidebar"
+      {...cardReveal(Boolean(reducedMotion), 0.08)}
+      viewport={motionViewport}
+    >
       <div className="write-sidebar-section">
         <p className="home-section-kicker">Meta</p>
         <label className="editor-field">
@@ -110,6 +117,6 @@ export function WriteSidebar() {
           </div>
         </div>
       ) : null}
-    </aside>
+    </motion.aside>
   );
 }

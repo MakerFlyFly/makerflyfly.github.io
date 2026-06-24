@@ -2,8 +2,11 @@
 
 import Link from "next/link";
 import { Edit3, Loader2, Plus, Save, Trash2, Upload, X } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import { MotionButton, MotionLabel } from "@/components/motion-primitives";
+import { cardReveal, motionViewport, pageEnter } from "@/lib/motion-presets";
 import { groupBlogsByYear } from "@/lib/blog-index";
 import { readFileAsText } from "@/lib/file-utils";
 import { getErrorMessage } from "@/lib/utils";
@@ -12,7 +15,11 @@ import { useBlogIndex } from "@/hooks/use-blog-index";
 import type { BlogIndexItem } from "@/types/content";
 import { deleteBlogs, saveBlogIndex } from "../write/services/push-blog";
 
+const MotionLink = motion.create(Link);
+
 export default function BlogPage() {
+  const reducedMotion = useReducedMotion();
+  const reduced = Boolean(reducedMotion);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { allItems, visibleItems, error, isLoading, mutate } = useBlogIndex();
   const [editing, setEditing] = useState(false);
@@ -88,7 +95,7 @@ export default function BlogPage() {
   };
 
   return (
-    <section className="page-shell blog-list-shell">
+    <motion.section className="page-shell blog-list-shell" {...pageEnter(reduced)}>
       <div className="page-heading">
         <div>
           <h1 className="page-title">文章</h1>
@@ -99,33 +106,37 @@ export default function BlogPage() {
         <span className="page-count">{items.length} 篇文章</span>
       </div>
 
-      <div className="toolbar-row">
+      <motion.div
+        className="toolbar-row"
+        {...cardReveal(reduced, 0.05)}
+        viewport={motionViewport}
+      >
         {editing ? (
           <>
-            <Link className="editor-button secondary" href="/write">
+            <MotionLink className="editor-button secondary" href="/write" {...(!reduced ? { whileHover: { scale: 1.03 }, whileTap: { scale: 0.97 } } : {})}>
               <Plus size={17} />
               新文章
-            </Link>
-            <button className="editor-button danger" disabled={saving} type="button" onClick={handleDelete}>
+            </MotionLink>
+            <MotionButton className="editor-button danger" disabled={saving} type="button" onClick={handleDelete}>
               <Trash2 size={17} />
               删除 {selected.size > 0 ? selected.size : ""}
-            </button>
-            <button className="editor-button" disabled={saving} type="button" onClick={handleSaveIndex}>
+            </MotionButton>
+            <MotionButton className="editor-button" disabled={saving} type="button" onClick={handleSaveIndex}>
               {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
               保存索引
-            </button>
-            <button className="editor-button secondary" type="button" onClick={cancelEdit}>
+            </MotionButton>
+            <MotionButton className="editor-button secondary" type="button" onClick={cancelEdit}>
               <X size={17} />
               取消
-            </button>
+            </MotionButton>
           </>
         ) : (
-          <button className="editor-button" type="button" onClick={enterEdit}>
+          <MotionButton className="editor-button" type="button" onClick={enterEdit}>
             <Edit3 size={17} />
             编辑文章
-          </button>
+          </MotionButton>
         )}
-        <label className="editor-button secondary">
+        <MotionLabel className="editor-button secondary">
           <Upload size={17} />
           导入 .pem
           <input
@@ -142,8 +153,8 @@ export default function BlogPage() {
               toast.success("私钥已导入浏览器内存。");
             }}
           />
-        </label>
-      </div>
+        </MotionLabel>
+      </motion.div>
 
       {isLoading ? (
         <div className="content-card empty-state">
@@ -156,8 +167,13 @@ export default function BlogPage() {
         </div>
       ) : (
         <div className="blog-year-stack">
-          {groups.map((group) => (
-            <section className="blog-group-card" key={group.year}>
+          {groups.map((group, groupIndex) => (
+            <motion.section
+              className="blog-group-card"
+              key={group.year}
+              {...cardReveal(reduced, groupIndex * 0.04)}
+              viewport={motionViewport}
+            >
               <div className="archive-group-head">
                 <h2 className="archive-group-title">
                   {group.year} 年
@@ -165,13 +181,18 @@ export default function BlogPage() {
                 </h2>
               </div>
               <div className="blog-list">
-                {group.items.map((item) => {
+                {group.items.map((item, index) => {
                   const checked = selected.has(item.slug);
 
                   return (
-                    <article
+                    <motion.article
                       className={checked ? "blog-list-item selected" : "blog-list-item"}
                       key={item.slug}
+                      layout={!reduced}
+                      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                      whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                      viewport={motionViewport}
+                      transition={{ duration: 0.26, delay: index * 0.025 }}
                     >
                       {editing ? (
                         <input
@@ -195,9 +216,13 @@ export default function BlogPage() {
                       )}
 
                       <div>
-                        <Link className="blog-title-link" href={`/blog/${item.slug}`}>
+                        <MotionLink
+                          className="blog-title-link"
+                          href={`/blog/${item.slug}`}
+                          {...(!reduced ? { whileHover: { x: 2 } } : {})}
+                        >
                           {item.title}
-                        </Link>
+                        </MotionLink>
                         <p>{item.summary}</p>
                         <div className="tag-row">
                           {item.tags.map((tag) => (
@@ -231,14 +256,14 @@ export default function BlogPage() {
                           </label>
                         </div>
                       ) : null}
-                    </article>
+                    </motion.article>
                   );
                 })}
               </div>
-            </section>
+            </motion.section>
           ))}
         </div>
       )}
-    </section>
+    </motion.section>
   );
 }

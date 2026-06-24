@@ -1,9 +1,12 @@
 "use client";
 
 import { Edit3, Loader2, Plus, Save, Upload, X } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import initialProjects from "./list.json";
+import { MotionButton, MotionLabel } from "@/components/motion-primitives";
+import { cardReveal, motionViewport, pageEnter } from "@/lib/motion-presets";
 import { readFileAsText } from "@/lib/file-utils";
 import { getErrorMessage } from "@/lib/utils";
 import { useAuthStore } from "@/hooks/use-auth";
@@ -13,6 +16,8 @@ import { ProjectCard } from "./components/project-card";
 import { pushProjects, type ProjectImageUpload } from "./services/push-projects";
 
 export default function ProjectsPage() {
+  const reducedMotion = useReducedMotion();
+  const reduced = Boolean(reducedMotion);
   const pemInputRef = useRef<HTMLInputElement>(null);
   const [projects, setProjects] = useState<ProjectRecord[]>(
     () => initialProjects as ProjectRecord[],
@@ -60,7 +65,7 @@ export default function ProjectsPage() {
   };
 
   return (
-    <section className="page-shell projects-shell">
+    <motion.section className="page-shell projects-shell" {...pageEnter(reduced)}>
       <div className="page-heading">
         <div>
           <h1 className="page-title">项目</h1>
@@ -71,29 +76,33 @@ export default function ProjectsPage() {
         <span className="page-count">{projects.length} 个项目</span>
       </div>
 
-      <div className="toolbar-row">
+      <motion.div
+        className="toolbar-row"
+        {...cardReveal(reduced, 0.05)}
+        viewport={motionViewport}
+      >
         {editing ? (
           <>
-            <button className="editor-button secondary" type="button" onClick={() => setCreateOpen(true)}>
+            <MotionButton className="editor-button secondary" type="button" onClick={() => setCreateOpen(true)}>
               <Plus size={17} />
               新项目
-            </button>
-            <button className="editor-button" disabled={saving} type="button" onClick={handleSave}>
+            </MotionButton>
+            <MotionButton className="editor-button" disabled={saving} type="button" onClick={handleSave}>
               {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
               保存
-            </button>
-            <button className="editor-button secondary" type="button" onClick={cancelEdit}>
+            </MotionButton>
+            <MotionButton className="editor-button secondary" type="button" onClick={cancelEdit}>
               <X size={17} />
               取消
-            </button>
+            </MotionButton>
           </>
         ) : (
-          <button className="editor-button" type="button" onClick={() => setEditing(true)}>
+          <MotionButton className="editor-button" type="button" onClick={() => setEditing(true)}>
             <Edit3 size={17} />
             编辑项目
-          </button>
+          </MotionButton>
         )}
-        <label className="editor-button secondary">
+        <MotionLabel className="editor-button secondary">
           <Upload size={17} />
           导入 .pem
           <input
@@ -110,8 +119,8 @@ export default function ProjectsPage() {
               toast.success("私钥已导入浏览器内存，请再次点击保存。");
             }}
           />
-        </label>
-      </div>
+        </MotionLabel>
+      </motion.div>
 
       <div className="editable-project-grid">
         {projects.map((project, index) => (
@@ -145,6 +154,6 @@ export default function ProjectsPage() {
           });
         }}
       />
-    </section>
+    </motion.section>
   );
 }

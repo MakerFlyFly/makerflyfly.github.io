@@ -1,16 +1,22 @@
 "use client";
 
-import { useLoadBlog } from "./hooks/use-load-blog";
+import { motion, useReducedMotion } from "motion/react";
+import { pageEnter } from "@/lib/motion-presets";
 import { WriteActions } from "./components/actions";
 import { WriteEditor } from "./components/editor";
 import { WritePreview } from "./components/preview";
 import { WriteSidebar } from "./components/sidebar";
+import { useLoadBlog } from "./hooks/use-load-blog";
 
 export default function WritePage() {
+  const reducedMotion = useReducedMotion();
   useLoadBlog();
 
   return (
-    <section className="write-shell">
+    <motion.section
+      className="write-shell"
+      {...pageEnter(Boolean(reducedMotion))}
+    >
       <div className="write-page-head">
         <div>
           <p className="home-section-kicker">Write</p>
@@ -26,6 +32,6 @@ export default function WritePage() {
         <WriteSidebar />
       </div>
       <WritePreview />
-    </section>
+    </motion.section>
   );
 }

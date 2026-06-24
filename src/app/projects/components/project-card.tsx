@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, GitBranch, ImagePlus, Package, Trash2 } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { buttonTap } from "@/lib/motion-presets";
 import { projectKey, type ProjectRecord } from "@/types/content";
 
 interface ProjectCardProps {
@@ -12,6 +14,8 @@ interface ProjectCardProps {
   onDelete?: () => void;
   onImageFile?: (file: File) => void;
 }
+
+const MotionLink = motion.create(Link);
 
 function splitTags(value: string) {
   return value
@@ -27,11 +31,21 @@ export function ProjectCard({
   onDelete,
   onImageFile,
 }: ProjectCardProps) {
+  const reducedMotion = useReducedMotion();
+  const reduced = Boolean(reducedMotion);
   const key = projectKey(project);
 
   if (editing) {
     return (
-      <article className="editable-project-card" id={key}>
+      <motion.article
+        className="editable-project-card"
+        id={key}
+        layout={!reduced}
+        initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 14 }}
+        animate={reduced ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+        exit={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ duration: 0.26 }}
+      >
         <div className="project-edit-media">
           {project.image ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -127,15 +141,29 @@ export function ProjectCard({
             />
           </label>
         </div>
-        <button className="card-delete-button" type="button" onClick={onDelete}>
+        <motion.button
+          className="card-delete-button"
+          type="button"
+          onClick={onDelete}
+          {...buttonTap(reduced)}
+        >
           <Trash2 size={17} />
-        </button>
-      </article>
+        </motion.button>
+      </motion.article>
     );
   }
 
   return (
-    <article className="editable-project-card readonly" id={key}>
+    <motion.article
+      className="editable-project-card readonly"
+      id={key}
+      layout={!reduced}
+      initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.96, y: 14 }}
+      whileInView={reduced ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      whileHover={reduced ? undefined : { scale: 1.01, y: -2 }}
+      transition={{ duration: 0.32 }}
+    >
       <div className="project-read-media">
         {project.image ? (
           <Image
@@ -162,32 +190,50 @@ export function ProjectCard({
             </span>
           ))}
         </div>
-        <ProjectLinks project={project} />
+        <ProjectLinks project={project} reduced={reduced} />
       </div>
-    </article>
+    </motion.article>
   );
 }
 
-function ProjectLinks({ project }: { project: ProjectRecord }) {
+function ProjectLinks({
+  project,
+  reduced,
+}: {
+  project: ProjectRecord;
+  reduced: boolean;
+}) {
   return (
     <div className="project-actions">
       {project.url ? (
-        <SmartProjectLink className="project-action" href={project.url}>
+        <SmartProjectLink className="project-action" href={project.url} reduced={reduced}>
           <ExternalLink size={16} />
           Website
         </SmartProjectLink>
       ) : null}
       {project.github ? (
-        <a className="project-action" href={project.github} rel="noreferrer" target="_blank">
+        <motion.a
+          className="project-action"
+          href={project.github}
+          rel="noreferrer"
+          target="_blank"
+          {...buttonTap(reduced)}
+        >
           <GitBranch size={16} />
           GitHub
-        </a>
+        </motion.a>
       ) : null}
       {project.npm ? (
-        <a className="project-action" href={project.npm} rel="noreferrer" target="_blank">
+        <motion.a
+          className="project-action"
+          href={project.npm}
+          rel="noreferrer"
+          target="_blank"
+          {...buttonTap(reduced)}
+        >
           <Package size={16} />
           NPM
-        </a>
+        </motion.a>
       ) : null}
     </div>
   );
@@ -196,23 +242,25 @@ function ProjectLinks({ project }: { project: ProjectRecord }) {
 function SmartProjectLink({
   href,
   className,
+  reduced,
   children,
 }: {
   href: string;
   className: string;
+  reduced: boolean;
   children: React.ReactNode;
 }) {
   if (href.startsWith("/")) {
     return (
-      <Link className={className} href={href}>
+      <MotionLink className={className} href={href} {...buttonTap(reduced)}>
         {children}
-      </Link>
+      </MotionLink>
     );
   }
 
   return (
-    <a className={className} href={href} rel="noreferrer" target="_blank">
+    <motion.a className={className} href={href} rel="noreferrer" target="_blank" {...buttonTap(reduced)}>
       {children}
-    </a>
+    </motion.a>
   );
 }

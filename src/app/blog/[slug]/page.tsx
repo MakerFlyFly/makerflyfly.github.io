@@ -1,14 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import { Edit3, Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { BlogPreview } from "@/components/blog/blog-preview";
+import { buttonTap, pageEnter } from "@/lib/motion-presets";
 import { loadBlog, type LoadedBlog } from "@/lib/load-blog";
 import { getErrorMessage } from "@/lib/utils";
 
+const MotionLink = motion.create(Link);
+
 export default function BlogDetailPage() {
+  const reducedMotion = useReducedMotion();
   const params = useParams<{ slug: string }>();
   const slug = decodeURIComponent(params.slug);
   const [state, setState] = useState<{
@@ -42,33 +47,46 @@ export default function BlogDetailPage() {
 
   if (error) {
     return (
-      <section className="page-shell">
+      <motion.section
+        className="page-shell"
+        {...pageEnter(Boolean(reducedMotion))}
+      >
         <div className="content-card empty-state">
           <h1>文章读取失败</h1>
           <p>{error}</p>
-          <Link className="editor-button" href="/blog">
+          <MotionLink
+            className="editor-button"
+            href="/blog"
+            {...buttonTap(Boolean(reducedMotion))}
+          >
             返回文章列表
-          </Link>
+          </MotionLink>
         </div>
-      </section>
+      </motion.section>
     );
   }
 
   if (!blog) {
     return (
-      <section className="page-shell">
+      <motion.section
+        className="page-shell"
+        {...pageEnter(Boolean(reducedMotion))}
+      >
         <div className="content-card empty-state">
           <Loader2 className="spin" size={24} />
           <p>正在加载文章...</p>
         </div>
-      </section>
+      </motion.section>
     );
   }
 
   const { config, markdown } = blog;
 
   return (
-    <section className="page-shell blog-detail-shell">
+    <motion.section
+      className="page-shell blog-detail-shell"
+      {...pageEnter(Boolean(reducedMotion))}
+    >
       <div className="blog-detail-head">
         <div>
           <p className="home-section-kicker">{config.category ?? "Article"}</p>
@@ -82,12 +100,16 @@ export default function BlogDetailPage() {
             ))}
           </div>
         </div>
-        <Link className="floating-edit-button" href={`/write/${slug}`}>
+        <MotionLink
+          className="floating-edit-button"
+          href={`/write/${slug}`}
+          {...buttonTap(Boolean(reducedMotion))}
+        >
           <Edit3 size={17} />
           编辑
-        </Link>
+        </MotionLink>
       </div>
       <BlogPreview markdown={markdown} />
-    </section>
+    </motion.section>
   );
 }

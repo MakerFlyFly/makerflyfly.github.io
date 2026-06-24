@@ -1,16 +1,23 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { useMarkdownRender } from "@/hooks/use-markdown-render";
+import { cardReveal, motionViewport } from "@/lib/motion-presets";
 
 interface BlogPreviewProps {
   markdown: string;
 }
 
 export function BlogPreview({ markdown }: BlogPreviewProps) {
+  const reducedMotion = useReducedMotion();
   const { content, toc, loading } = useMarkdownRender(markdown);
 
   return (
-    <div className="article-layout">
+    <motion.div
+      className="article-layout"
+      {...cardReveal(Boolean(reducedMotion))}
+      viewport={motionViewport}
+    >
       <article className="article-view">
         {loading ? <p className="article-muted">正在渲染 Markdown...</p> : content}
       </article>
@@ -28,6 +35,6 @@ export function BlogPreview({ markdown }: BlogPreviewProps) {
           ))}
         </aside>
       ) : null}
-    </div>
+    </motion.div>
   );
 }

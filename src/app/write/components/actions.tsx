@@ -3,13 +3,14 @@
 import { Eye, EyeOff, Loader2, Save, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
+import { MotionButton, MotionLabel } from "@/components/motion-primitives";
 import { getMissingGitHubConfig } from "@/consts";
+import { useAuthStore } from "@/hooks/use-auth";
 import { readFileAsText } from "@/lib/file-utils";
 import { getErrorMessage } from "@/lib/utils";
-import { useAuthStore } from "@/hooks/use-auth";
+import { pushBlog } from "../services/push-blog";
 import { usePreviewStore } from "../stores/preview-store";
 import { useWriteStore } from "../stores/write-store";
-import { pushBlog } from "../services/push-blog";
 
 export function WriteActions() {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,19 +48,24 @@ export function WriteActions() {
 
   return (
     <div className="write-actions">
-      <button
+      <MotionButton
         className="editor-button secondary"
         type="button"
         onClick={() => setPreviewOpen(!previewOpen)}
       >
         {previewOpen ? <EyeOff size={17} /> : <Eye size={17} />}
         {previewOpen ? "隐藏预览" : "显示预览"}
-      </button>
-      <button className="editor-button" disabled={saving} type="button" onClick={handleSave}>
+      </MotionButton>
+      <MotionButton
+        className="editor-button"
+        disabled={saving}
+        type="button"
+        onClick={handleSave}
+      >
         {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
         保存
-      </button>
-      <label className="editor-button secondary">
+      </MotionButton>
+      <MotionLabel className="editor-button secondary">
         <Upload size={17} />
         导入 .pem
         <input
@@ -77,7 +83,7 @@ export function WriteActions() {
             toast.success("私钥已导入浏览器内存，请再次点击保存。");
           }}
         />
-      </label>
+      </MotionLabel>
     </div>
   );
 }

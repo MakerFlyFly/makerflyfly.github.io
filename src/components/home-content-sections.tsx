@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, ExternalLink, GitBranch, Package } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import { MotionCard } from "@/components/motion-primitives";
+import { buttonTap, cardReveal, motionViewport } from "@/lib/motion-presets";
 import { projects, visibleArticles } from "@/data/content";
 import type { ProjectRecord } from "@/types/content";
 
@@ -8,24 +13,36 @@ const HOME_ARTICLE_PREVIEW_LIMIT = 4;
 
 const previewProjects = projects.slice(0, HOME_PROJECT_PREVIEW_LIMIT);
 const previewArticles = visibleArticles.slice(0, HOME_ARTICLE_PREVIEW_LIMIT);
+const MotionLink = motion.create(Link);
 
 export function HomeContentSections() {
+  const reducedMotion = useReducedMotion();
+  const reduced = Boolean(reducedMotion);
+
   return (
     <section className="home-content-sections" aria-label="Content preview">
-      <div className="home-section-head">
+      <motion.div
+        className="home-section-head"
+        {...cardReveal(reduced, 0)}
+        viewport={motionViewport}
+      >
         <div>
           <p className="home-section-kicker">Projects</p>
           <h2>项目</h2>
         </div>
-        <Link className="home-section-link" href="/projects">
+        <MotionLink className="home-section-link" href="/projects" {...buttonTap(reduced)}>
           全部项目
           <ArrowRight size={16} />
-        </Link>
-      </div>
+        </MotionLink>
+      </motion.div>
 
       <div className="home-project-preview">
-        {previewProjects.map((project) => (
-          <article className="home-preview-card" key={`${project.name}-${project.year}`}>
+        {previewProjects.map((project, index) => (
+          <MotionCard
+            className="home-preview-card"
+            delay={index * 0.05}
+            key={`${project.name}-${project.year}`}
+          >
             <div className="home-preview-card-head">
               <h3>{project.name}</h3>
               <span>{project.year}</span>
@@ -38,61 +55,89 @@ export function HomeContentSections() {
                 </span>
               ))}
             </div>
-            <ProjectPreviewActions project={project} />
-          </article>
+            <ProjectPreviewActions project={project} reduced={reduced} />
+          </MotionCard>
         ))}
       </div>
 
-      <div className="home-section-head home-section-head-spaced">
+      <motion.div
+        className="home-section-head home-section-head-spaced"
+        {...cardReveal(reduced, 0)}
+        viewport={motionViewport}
+      >
         <div>
           <p className="home-section-kicker">Articles</p>
           <h2>文章</h2>
         </div>
-        <Link className="home-section-link" href="/blog">
+        <MotionLink className="home-section-link" href="/blog" {...buttonTap(reduced)}>
           全部文章
           <ArrowRight size={16} />
-        </Link>
-      </div>
+        </MotionLink>
+      </motion.div>
 
-      <div className="home-article-preview">
-        {previewArticles.map((article) => (
-          <Link
+      <motion.div
+        className="home-article-preview"
+        {...cardReveal(reduced, 0)}
+        viewport={motionViewport}
+      >
+        {previewArticles.map((article, index) => (
+          <MotionLink
             className="home-article-row"
             href={`/blog/${article.slug}`}
             key={article.slug}
+            style={{ transitionDelay: `${index * 35}ms` }}
+            {...buttonTap(reduced)}
           >
             <time dateTime={article.date}>{article.date.slice(5)}</time>
             <span>
               <strong>{article.title}</strong>
               <small>{article.summary}</small>
             </span>
-          </Link>
+          </MotionLink>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }
 
-function ProjectPreviewActions({ project }: { project: ProjectRecord }) {
+function ProjectPreviewActions({
+  project,
+  reduced,
+}: {
+  project: ProjectRecord;
+  reduced: boolean;
+}) {
   return (
     <div className="project-actions home-preview-action">
       {project.url ? (
-        <SmartProjectLink className="project-action" href={project.url}>
+        <SmartProjectLink className="project-action" href={project.url} reduced={reduced}>
           <ExternalLink size={16} />
           Website
         </SmartProjectLink>
       ) : null}
       {project.github ? (
-        <a className="project-action" href={project.github} rel="noreferrer" target="_blank">
+        <motion.a
+          className="project-action"
+          href={project.github}
+          rel="noreferrer"
+          target="_blank"
+          {...buttonTap(reduced)}
+        >
           <GitBranch size={16} />
           GitHub
-        </a>
+        </motion.a>
       ) : null}
       {project.npm ? (
-        <a className="project-action" href={project.npm} rel="noreferrer" target="_blank">
+        <motion.a
+          className="project-action"
+          href={project.npm}
+          rel="noreferrer"
+          target="_blank"
+          {...buttonTap(reduced)}
+        >
           <Package size={16} />
           NPM
-        </a>
+        </motion.a>
       ) : null}
     </div>
   );
@@ -101,23 +146,25 @@ function ProjectPreviewActions({ project }: { project: ProjectRecord }) {
 function SmartProjectLink({
   href,
   className,
+  reduced,
   children,
 }: {
   href: string;
   className: string;
+  reduced: boolean;
   children: React.ReactNode;
 }) {
   if (href.startsWith("/")) {
     return (
-      <Link className={className} href={href}>
+      <MotionLink className={className} href={href} {...buttonTap(reduced)}>
         {children}
-      </Link>
+      </MotionLink>
     );
   }
 
   return (
-    <a className={className} href={href} rel="noreferrer" target="_blank">
+    <motion.a className={className} href={href} rel="noreferrer" target="_blank" {...buttonTap(reduced)}>
       {children}
-    </a>
+    </motion.a>
   );
 }

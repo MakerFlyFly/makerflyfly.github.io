@@ -1,20 +1,26 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { useParams } from "next/navigation";
-import { useLoadBlog } from "../hooks/use-load-blog";
+import { pageEnter } from "@/lib/motion-presets";
 import { WriteActions } from "../components/actions";
 import { WriteEditor } from "../components/editor";
 import { WritePreview } from "../components/preview";
 import { WriteSidebar } from "../components/sidebar";
+import { useLoadBlog } from "../hooks/use-load-blog";
 
 export default function EditBlogPage() {
+  const reducedMotion = useReducedMotion();
   const params = useParams<{ slug: string }>();
   const slug = decodeURIComponent(params.slug);
 
   useLoadBlog(slug);
 
   return (
-    <section className="write-shell">
+    <motion.section
+      className="write-shell"
+      {...pageEnter(Boolean(reducedMotion))}
+    >
       <div className="write-page-head">
         <div>
           <p className="home-section-kicker">Edit</p>
@@ -28,6 +34,6 @@ export default function EditBlogPage() {
         <WriteSidebar />
       </div>
       <WritePreview />
-    </section>
+    </motion.section>
   );
 }

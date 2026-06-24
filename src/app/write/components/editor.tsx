@@ -1,9 +1,11 @@
 "use client";
 
 import { ImagePlus } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { fileToDataUrl } from "@/lib/file-utils";
-import { useWriteStore } from "../stores/write-store";
+import { cardReveal, motionViewport } from "@/lib/motion-presets";
 import { markdownImageInsert } from "../services/push-blog";
+import { useWriteStore } from "../stores/write-store";
 import type { ImageAsset } from "../types";
 
 async function createImageAsset(file: File): Promise<ImageAsset> {
@@ -15,6 +17,7 @@ async function createImageAsset(file: File): Promise<ImageAsset> {
 }
 
 export function WriteEditor() {
+  const reducedMotion = useReducedMotion();
   const markdown = useWriteStore((state) => state.markdown);
   const setField = useWriteStore((state) => state.setField);
   const addImages = useWriteStore((state) => state.addImages);
@@ -36,8 +39,10 @@ export function WriteEditor() {
   };
 
   return (
-    <div
+    <motion.div
       className="write-editor-card"
+      {...cardReveal(Boolean(reducedMotion))}
+      viewport={motionViewport}
       onDrop={(event) => {
         event.preventDefault();
         void appendImages(Array.from(event.dataTransfer.files));
@@ -66,7 +71,7 @@ export function WriteEditor() {
       </div>
       <textarea
         className="write-textarea"
-        placeholder="# 标题&#10;&#10;在这里写 Markdown。可以拖入或粘贴图片。"
+        placeholder={"# 标题\n\n在这里写 Markdown。可以拖入或粘贴图片。"}
         value={markdown}
         onChange={(event) => setField("markdown", event.target.value)}
         onPaste={(event) => {
@@ -77,6 +82,6 @@ export function WriteEditor() {
           }
         }}
       />
-    </div>
+    </motion.div>
   );
 }
