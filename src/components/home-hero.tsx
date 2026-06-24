@@ -41,18 +41,12 @@ export function HomeHero({ articleCount, projectCount }: HomeHeroProps) {
           aria-label="创作方向"
           {...pageEnter(reduced, 0.12)}
         >
-          <span>代码</span>
-          <span>·</span>
-          <span>写作</span>
-          <span>·</span>
-          <span>实验</span>
+          <span>想象</span>
           <span>·</span>
           <span>创造</span>
         </motion.div>
         <motion.p className="hero-description" {...pageEnter(reduced, 0.18)}>
-          一个记录代码、产品想法、量化实验与游戏开发的个人博客。
-          这里不是公司官网，而是 <strong>MakerFly</strong>{" "}
-          的长期创作档案与实验控制台。
+          学习与成长，灵感与创造，这里记录着我探索世界的方式。
         </motion.p>
       </div>
 

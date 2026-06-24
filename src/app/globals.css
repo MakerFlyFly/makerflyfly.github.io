@@ -28,7 +28,9 @@
 html {
   min-height: 100%;
   background: var(--background-deep);
+  overflow-y: scroll;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
