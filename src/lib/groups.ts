@@ -1,4 +1,5 @@
 import type { ArticleItem, ProjectItem } from "@/data/content";
+import { projectKey } from "@/types/content";
 
 export interface ArticleGroup {
   id: string;
@@ -27,7 +28,7 @@ export function groupArticlesByYear(items: ArticleItem[]): ArticleGroup[] {
     .map(([year, groupItems]) => ({
       id: year,
       label: `${year} 年`,
-      items: groupItems.toSorted((a, b) => b.date.localeCompare(a.date)),
+      items: [...groupItems].sort((a, b) => b.date.localeCompare(a.date)),
     }));
 }
 
@@ -35,14 +36,21 @@ export function groupProjectsByCategory(items: ProjectItem[]): ProjectGroup[] {
   const groups = new Map<string, ProjectItem[]>();
 
   for (const item of items) {
-    const group = groups.get(item.category) ?? [];
+    const category = item.category ?? "项目";
+    const group = groups.get(category) ?? [];
     group.push(item);
-    groups.set(item.category, group);
+    groups.set(category, group);
   }
 
   return [...groups.entries()].map(([category, groupItems]) => ({
-    id: category,
+    id: projectKey({
+      name: category,
+      year: groupItems[0]?.year ?? new Date().getFullYear(),
+      description: category,
+      url: "",
+      tags: [],
+    }),
     label: category,
-    items: groupItems.toSorted((a, b) => b.year - a.year),
+    items: [...groupItems].sort((a, b) => b.year - a.year),
   }));
 }

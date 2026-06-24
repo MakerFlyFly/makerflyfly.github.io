@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronDown, ChevronUp, ExternalLink, GitBranch } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink, GitBranch, Package } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ProjectGroup } from "@/lib/groups";
+import { projectKey, type ProjectRecord } from "@/types/content";
 
 interface ProjectGroupsProps {
   groups: ProjectGroup[];
@@ -21,34 +22,23 @@ export function ProjectGroups({ groups, initialVisible = 2 }: ProjectGroupsProps
       }
 
       const targetGroup = groups.find((group) =>
-        group.items.some((project) => project.slug === targetId),
+        group.items.some((project) => projectKey(project) === targetId),
       );
+
       if (!targetGroup) {
         return;
       }
 
-      setExpandedGroups((current) => {
-        if (current.has(targetGroup.id)) {
-          return current;
-        }
-        const next = new Set(current);
-        next.add(targetGroup.id);
-        return next;
-      });
-
+      setExpandedGroups((current) => new Set(current).add(targetGroup.id));
       window.requestAnimationFrame(() => {
-        document.getElementById(targetId)?.scrollIntoView({
-          block: "center",
-        });
+        document.getElementById(targetId)?.scrollIntoView({ block: "center" });
       });
     };
 
     expandHashTarget();
     window.addEventListener("hashchange", expandHashTarget);
 
-    return () => {
-      window.removeEventListener("hashchange", expandHashTarget);
-    };
+    return () => window.removeEventListener("hashchange", expandHashTarget);
   }, [groups]);
 
   const toggleGroup = (groupId: string) => {
@@ -95,61 +85,82 @@ export function ProjectGroups({ groups, initialVisible = 2 }: ProjectGroupsProps
             </div>
 
             <div className="project-grid" id={listId}>
-              {visibleItems.map((project) => {
-                const internal = project.url.startsWith("/");
-
-                return (
-                  <article className="project-card" id={project.slug} key={project.slug}>
-                    <div className="project-card-head">
-                      <h3 className="project-title">{project.name}</h3>
-                      <span className="project-year">{project.year}</span>
+              {visibleItems.map((project) => (
+                <article
+                  className="project-card"
+                  id={projectKey(project)}
+                  key={projectKey(project)}
+                >
+                  <div className="project-card-head">
+                    <h3 className="project-title">{project.name}</h3>
+                    <span className="project-year">{project.year}</span>
+                  </div>
+                  <div>
+                    <p className="project-description">{project.description}</p>
+                    <div className="tag-row">
+                      {project.tags.map((tag) => (
+                        <span className="tag" key={tag}>
+                          #{tag}
+                        </span>
+                      ))}
                     </div>
-                    <div>
-                      <p className="project-description">{project.description}</p>
-                      <div className="tag-row">
-                        {project.tags.map((tag) => (
-                          <span className="tag" key={tag}>
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="project-actions">
-                      {internal ? (
-                        <Link className="project-action" href={project.url}>
-                          <ExternalLink size={16} />
-                          查看
-                        </Link>
-                      ) : (
-                        <a
-                          className="project-action"
-                          href={project.url}
-                          rel="noreferrer"
-                          target="_blank"
-                        >
-                          <ExternalLink size={16} />
-                          查看
-                        </a>
-                      )}
-                      {project.github ? (
-                        <a
-                          className="project-action"
-                          href={project.github}
-                          rel="noreferrer"
-                          target="_blank"
-                        >
-                          <GitBranch size={16} />
-                          GitHub
-                        </a>
-                      ) : null}
-                    </div>
-                  </article>
-                );
-              })}
+                  </div>
+                  <ProjectActionLinks project={project} />
+                </article>
+              ))}
             </div>
           </section>
         );
       })}
     </div>
+  );
+}
+
+function ProjectActionLinks({ project }: { project: ProjectRecord }) {
+  return (
+    <div className="project-actions">
+      {project.url ? (
+        <SmartLink className="project-action" href={project.url}>
+          <ExternalLink size={16} />
+          Website
+        </SmartLink>
+      ) : null}
+      {project.github ? (
+        <a className="project-action" href={project.github} rel="noreferrer" target="_blank">
+          <GitBranch size={16} />
+          GitHub
+        </a>
+      ) : null}
+      {project.npm ? (
+        <a className="project-action" href={project.npm} rel="noreferrer" target="_blank">
+          <Package size={16} />
+          NPM
+        </a>
+      ) : null}
+    </div>
+  );
+}
+
+function SmartLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: React.ReactNode;
+}) {
+  if (href.startsWith("/")) {
+    return (
+      <Link className={className} href={href}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <a className={className} href={href} rel="noreferrer" target="_blank">
+      {children}
+    </a>
   );
 }

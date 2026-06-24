@@ -1,18 +1,19 @@
 import { projects, visibleArticles } from "@/data/content";
 import type { SearchIndexItem } from "@/lib/search";
+import { projectKey } from "@/types/content";
 
 export const searchIndex: SearchIndexItem[] = [
   ...visibleArticles.map((article) => ({
     type: "article" as const,
     title: article.title,
-    description: article.summary,
-    href: `/blog#${article.slug}`,
+    description: article.summary ?? "",
+    href: `/blog/${article.slug}`,
     tags: article.tags,
     dateOrYear: article.date.slice(0, 4),
     searchableText: [
       article.title,
-      article.summary,
-      article.category,
+      article.summary ?? "",
+      article.category ?? "",
       article.date,
       article.tags.join(" "),
     ].join(" "),
@@ -21,13 +22,13 @@ export const searchIndex: SearchIndexItem[] = [
     type: "project" as const,
     title: project.name,
     description: project.description,
-    href: `/projects#${project.slug}`,
+    href: project.url || `/projects#${projectKey(project)}`,
     tags: project.tags,
     dateOrYear: String(project.year),
     searchableText: [
       project.name,
       project.description,
-      project.category,
+      project.category ?? "",
       String(project.year),
       project.tags.join(" "),
     ].join(" "),

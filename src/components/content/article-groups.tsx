@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ArticleGroup } from "@/lib/groups";
@@ -22,32 +23,21 @@ export function ArticleGroups({ groups, initialVisible = 3 }: ArticleGroupsProps
       const targetGroup = groups.find((group) =>
         group.items.some((article) => article.slug === targetId),
       );
+
       if (!targetGroup) {
         return;
       }
 
-      setExpandedGroups((current) => {
-        if (current.has(targetGroup.id)) {
-          return current;
-        }
-        const next = new Set(current);
-        next.add(targetGroup.id);
-        return next;
-      });
-
+      setExpandedGroups((current) => new Set(current).add(targetGroup.id));
       window.requestAnimationFrame(() => {
-        document.getElementById(targetId)?.scrollIntoView({
-          block: "center",
-        });
+        document.getElementById(targetId)?.scrollIntoView({ block: "center" });
       });
     };
 
     expandHashTarget();
     window.addEventListener("hashchange", expandHashTarget);
 
-    return () => {
-      window.removeEventListener("hashchange", expandHashTarget);
-    };
+    return () => window.removeEventListener("hashchange", expandHashTarget);
   }, [groups]);
 
   const toggleGroup = (groupId: string) => {
@@ -95,7 +85,12 @@ export function ArticleGroups({ groups, initialVisible = 3 }: ArticleGroupsProps
 
             <div className="article-list" id={listId}>
               {visibleItems.map((article) => (
-                <article className="article-row" id={article.slug} key={article.slug}>
+                <Link
+                  className="article-row"
+                  id={article.slug}
+                  href={`/blog/${article.slug}`}
+                  key={article.slug}
+                >
                   <time className="article-date" dateTime={article.date}>
                     {article.date.slice(5)}
                   </time>
@@ -110,7 +105,7 @@ export function ArticleGroups({ groups, initialVisible = 3 }: ArticleGroupsProps
                       ))}
                     </div>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </section>

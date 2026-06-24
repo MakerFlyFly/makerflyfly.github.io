@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import { AppHeader } from "@/components/app-header";
 import { BlurredBubblesBackground } from "@/components/blurred-bubbles-background";
 import { searchIndex } from "@/data/search-index";
@@ -23,6 +24,7 @@ export default function RootLayout({
             <AppHeader searchItems={searchIndex} />
             <main className="page-main">{children}</main>
           </div>
+          <Toaster richColors position="top-center" />
         </div>
       </body>
     </html>
