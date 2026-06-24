@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AppHeader } from "@/components/app-header";
+import { BlurredBubblesBackground } from "@/components/blurred-bubbles-background";
 import { searchIndex } from "@/data/search-index";
 import "./globals.css";
 
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="zh-CN" data-scroll-behavior="smooth">
       <body>
         <div className="site-root">
+          <BlurredBubblesBackground />
           <div className="app-frame">
             <AppHeader searchItems={searchIndex} />
             <main className="page-main">{children}</main>
