@@ -34,7 +34,6 @@ export function GlobalSearch({ items }: GlobalSearchProps) {
   return (
     <div className="search-wrap">
       <form className="search-shell" role="search" onSubmit={handleSubmit}>
-        <Search aria-hidden="true" size={18} color="currentColor" />
         <input
           className="search-input"
           role="combobox"
