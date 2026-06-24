@@ -1,0 +1,40 @@
+{
+  "name": "makerfly-blog",
+  "version": "1.0.0",
+  "private": true,
+  "description": "MakerFly personal blog built with Next 16, React 19, and Tailwind 4.",
+  "scripts": {
+    "dev": "next dev -p 2025",
+    "build": "next build",
+    "start": "next start -p 2025",
+    "lint": "eslint"
+  },
+  "keywords": [
+    "blog",
+    "next",
+    "react"
+  ],
+  "author": "MakerFly",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "lucide-react": "^1.21.0",
+    "motion": "^12.41.0",
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "@types/node": "^26.0.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.2.9",
+    "tailwindcss": "^4.3.1",
+    "typescript": "^6.0.3"
+  },
+  "overrides": {
+    "postcss": "8.5.15"
+  }
+}
