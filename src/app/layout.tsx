@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AppHeader } from "@/components/app-header";
-import { contentCounts, searchIndex } from "@/data/search-index";
+import { searchIndex } from "@/data/search-index";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body>
         <div className="site-root">
           <div className="app-frame">
-            <AppHeader counts={contentCounts} searchItems={searchIndex} />
+            <AppHeader searchItems={searchIndex} />
             <main className="page-main">{children}</main>
           </div>
         </div>

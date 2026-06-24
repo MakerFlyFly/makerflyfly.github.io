@@ -1,6 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
-import { GitBranch, Mail, Rss } from "lucide-react";
-import { LogoMark } from "@/components/logo-mark";
+import { ReferenceEmailIcon, ReferenceGithubIcon } from "@/components/reference-social-icons";
+import { contentCounts } from "@/data/search-index";
 
 export default function Home() {
   return (
@@ -25,39 +26,53 @@ export default function Home() {
         </div>
         <p className="hero-description">
           一个记录代码、产品想法、量化实验与游戏开发的个人博客。
-          这里不是公司官网，而是 <strong>MakerFly</strong>{" "}
-          的长期创作档案与实验控制台。
+          这里不是公司官网，而是 <strong>MakerFly</strong> 的长期创作档案与实验控制台。
         </p>
       </div>
 
-      <aside className="console-card" aria-label="MakerFly Console">
-        <span className="console-index">01</span>
-        <div className="avatar-panel">
-          <LogoMark />
+      <aside className="profile-card" aria-label="MakerFly profile">
+        <div className="avatar-frame" aria-hidden="true">
+          <Image
+            className="avatar-image avatar-open"
+            src="/images/avatar/makerfly-open.png"
+            alt=""
+            width={320}
+            height={320}
+            priority
+          />
+          <Image
+            className="avatar-image avatar-closed"
+            src="/images/avatar/makerfly-closed.png"
+            alt=""
+            width={320}
+            height={320}
+          />
         </div>
-        <h2 className="console-title">
-          MakerFly <span>Console</span>
-        </h2>
-        <p className="console-desc">
-          正在构建自己的工具、文章系统、实验室与小游戏世界。
-        </p>
-        <div className="console-divider" />
-        <div className="social-row">
+
+        <div className="profile-stats" aria-label="内容统计">
+          <Link className="profile-stat" href="/blog">
+            <span>文章</span>
+            <strong>{String(contentCounts.articles).padStart(2, "0")}</strong>
+          </Link>
+          <Link className="profile-stat" href="/projects">
+            <span>项目</span>
+            <strong>{String(contentCounts.projects).padStart(2, "0")}</strong>
+          </Link>
+        </div>
+
+        <div className="social-row" aria-label="社交入口">
           <a
-            className="social-link"
+            className="social-link social-link-github"
             href="https://github.com/MakerFly"
             rel="noreferrer"
             target="_blank"
             aria-label="GitHub"
           >
-            <GitBranch size={25} />
+            <ReferenceGithubIcon />
           </a>
-          <a className="social-link" href="mailto:hello@makerfly.dev" aria-label="邮件">
-            <Mail size={25} />
+          <a className="social-link social-link-email" href="mailto:hello@makerfly.dev" aria-label="邮件">
+            <ReferenceEmailIcon />
           </a>
-          <Link className="social-link" href="/blog" aria-label="文章">
-            <Rss size={25} />
-          </Link>
         </div>
       </aside>
     </section>
