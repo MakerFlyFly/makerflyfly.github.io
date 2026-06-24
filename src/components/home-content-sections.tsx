@@ -37,27 +37,34 @@ export function HomeContentSections() {
       </motion.div>
 
       <div className="home-project-preview">
-        {previewProjects.map((project, index) => (
-          <MotionCard
-            className="home-preview-card"
-            delay={index * 0.05}
-            key={`${project.name}-${project.year}`}
-          >
-            <div className="home-preview-card-head">
-              <h3>{project.name}</h3>
-              <span>{project.year}</span>
-            </div>
-            <p>{project.description}</p>
-            <div className="tag-row">
-              {project.tags.map((tag) => (
-                <span className="tag" key={tag}>
-                  #{tag}
-                </span>
-              ))}
-            </div>
-            <ProjectPreviewActions project={project} reduced={reduced} />
+        {previewProjects.length > 0 ? (
+          previewProjects.map((project, index) => (
+            <MotionCard
+              className="home-preview-card"
+              delay={index * 0.05}
+              key={`${project.name}-${project.year}`}
+            >
+              <div className="home-preview-card-head">
+                <h3>{project.name}</h3>
+                <span>{project.year}</span>
+              </div>
+              <p>{project.description}</p>
+              <div className="tag-row">
+                {project.tags.map((tag) => (
+                  <span className="tag" key={tag}>
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+              <ProjectPreviewActions project={project} reduced={reduced} />
+            </MotionCard>
+          ))
+        ) : (
+          <MotionCard className="home-preview-card empty-state">
+            <h3>还没有项目</h3>
+            <p>发布第一个项目后会显示在这里。</p>
           </MotionCard>
-        ))}
+        )}
       </div>
 
       <motion.div
@@ -80,21 +87,30 @@ export function HomeContentSections() {
         {...cardReveal(reduced, 0)}
         viewport={motionViewport}
       >
-        {previewArticles.map((article, index) => (
-          <MotionLink
-            className="home-article-row"
-            href={`/blog/${article.slug}`}
-            key={article.slug}
-            style={{ transitionDelay: `${index * 35}ms` }}
-            {...buttonTap(reduced)}
-          >
-            <time dateTime={article.date}>{article.date.slice(5)}</time>
+        {previewArticles.length > 0 ? (
+          previewArticles.map((article, index) => (
+            <MotionLink
+              className="home-article-row"
+              href={`/blog/${article.slug}`}
+              key={article.slug}
+              style={{ transitionDelay: `${index * 35}ms` }}
+              {...buttonTap(reduced)}
+            >
+              <time dateTime={article.date}>{article.date.slice(5)}</time>
+              <span>
+                <strong>{article.title}</strong>
+                <small>{article.summary}</small>
+              </span>
+            </MotionLink>
+          ))
+        ) : (
+          <div className="home-article-row empty-state">
             <span>
-              <strong>{article.title}</strong>
-              <small>{article.summary}</small>
+              <strong>还没有文章</strong>
+              <small>发布第一篇文章后会显示在这里。</small>
             </span>
-          </MotionLink>
-        ))}
+          </div>
+        )}
       </motion.div>
     </section>
   );

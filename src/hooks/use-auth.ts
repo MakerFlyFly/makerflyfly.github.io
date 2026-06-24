@@ -14,6 +14,7 @@ interface AuthState {
   privateKey: string | null;
   token: string | null;
   expiresAt: string | null;
+  canEdit: boolean;
   setPrivateKey: (privateKey: string) => void;
   clearAuth: () => void;
   getToken: () => Promise<string>;
@@ -51,17 +52,20 @@ function writeTokenCache(cache: TokenCache) {
   sessionStorage.setItem(TOKEN_CACHE_KEY, JSON.stringify(cache));
 }
 
+const initialTokenCache = readTokenCache();
+
 export const useAuthStore = create<AuthState>((set, get) => ({
   privateKey: null,
-  token: null,
-  expiresAt: null,
-  setPrivateKey: (privateKey) => set({ privateKey }),
+  token: initialTokenCache?.token ?? null,
+  expiresAt: initialTokenCache?.expiresAt ?? null,
+  canEdit: Boolean(initialTokenCache),
+  setPrivateKey: (privateKey) => set({ privateKey, canEdit: true }),
   clearAuth: () => {
     if (typeof window !== "undefined") {
       sessionStorage.removeItem(TOKEN_CACHE_KEY);
     }
 
-    set({ privateKey: null, token: null, expiresAt: null });
+    set({ privateKey: null, token: null, expiresAt: null, canEdit: false });
   },
   getToken: async () => {
     const state = get();
@@ -71,7 +75,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         : readTokenCache();
 
     if (cached && new Date(cached.expiresAt).getTime() - Date.now() > 60_000) {
-      set({ token: cached.token, expiresAt: cached.expiresAt });
+      set({ token: cached.token, expiresAt: cached.expiresAt, canEdit: true });
       return cached.token;
     }
 
@@ -86,7 +90,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     };
 
     writeTokenCache(nextCache);
-    set({ token: nextCache.token, expiresAt: nextCache.expiresAt });
+    set({ token: nextCache.token, expiresAt: nextCache.expiresAt, canEdit: true });
 
     return nextCache.token;
   },

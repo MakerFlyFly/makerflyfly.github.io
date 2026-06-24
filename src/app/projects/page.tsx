@@ -26,6 +26,7 @@ export default function ProjectsPage() {
   const [saving, setSaving] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [imageUploads, setImageUploads] = useState<ProjectImageUpload[]>([]);
+  const canEdit = useAuthStore((state) => state.canEdit);
   const privateKey = useAuthStore((state) => state.privateKey);
   const setPrivateKey = useAuthStore((state) => state.setPrivateKey);
   const getToken = useAuthStore((state) => state.getToken);
@@ -76,73 +77,82 @@ export default function ProjectsPage() {
         <span className="page-count">{projects.length} 个项目</span>
       </div>
 
-      <motion.div
-        className="toolbar-row"
-        {...cardReveal(reduced, 0.05)}
-        viewport={motionViewport}
-      >
-        {editing ? (
-          <>
-            <MotionButton className="editor-button secondary" type="button" onClick={() => setCreateOpen(true)}>
-              <Plus size={17} />
-              新项目
+      {canEdit ? (
+        <motion.div
+          className="toolbar-row"
+          {...cardReveal(reduced, 0.05)}
+          viewport={motionViewport}
+        >
+          {editing ? (
+            <>
+              <MotionButton className="editor-button secondary" type="button" onClick={() => setCreateOpen(true)}>
+                <Plus size={17} />
+                新项目
+              </MotionButton>
+              <MotionButton className="editor-button" disabled={saving} type="button" onClick={handleSave}>
+                {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
+                保存
+              </MotionButton>
+              <MotionButton className="editor-button secondary" type="button" onClick={cancelEdit}>
+                <X size={17} />
+                取消
+              </MotionButton>
+            </>
+          ) : (
+            <MotionButton className="editor-button" type="button" onClick={() => setEditing(true)}>
+              <Edit3 size={17} />
+              编辑项目
             </MotionButton>
-            <MotionButton className="editor-button" disabled={saving} type="button" onClick={handleSave}>
-              {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
-              保存
-            </MotionButton>
-            <MotionButton className="editor-button secondary" type="button" onClick={cancelEdit}>
-              <X size={17} />
-              取消
-            </MotionButton>
-          </>
-        ) : (
-          <MotionButton className="editor-button" type="button" onClick={() => setEditing(true)}>
-            <Edit3 size={17} />
-            编辑项目
-          </MotionButton>
-        )}
-        <MotionLabel className="editor-button secondary">
-          <Upload size={17} />
-          导入 .pem
-          <input
-            ref={pemInputRef}
-            accept=".pem,.key,.txt"
-            type="file"
-            onChange={async (event) => {
-              const file = event.target.files?.[0];
-              event.currentTarget.value = "";
-              if (!file) {
-                return;
-              }
-              setPrivateKey(await readFileAsText(file));
-              toast.success("私钥已导入浏览器内存，请再次点击保存。");
-            }}
-          />
-        </MotionLabel>
-      </motion.div>
+          )}
+          <MotionLabel className="editor-button secondary">
+            <Upload size={17} />
+            导入 .pem
+            <input
+              ref={pemInputRef}
+              accept=".pem,.key,.txt"
+              type="file"
+              onChange={async (event) => {
+                const file = event.target.files?.[0];
+                event.currentTarget.value = "";
+                if (!file) {
+                  return;
+                }
+                setPrivateKey(await readFileAsText(file));
+                toast.success("私钥已导入浏览器内存，请再次点击保存。");
+              }}
+            />
+          </MotionLabel>
+        </motion.div>
+      ) : null}
 
-      <div className="editable-project-grid">
-        {projects.map((project, index) => (
-          <ProjectCard
-            editing={editing}
-            key={`${project.name}-${index}`}
-            project={project}
-            onChange={(nextProject) => updateProject(index, nextProject)}
-            onDelete={() =>
-              setProjects((current) =>
-                current.filter((_, currentIndex) => currentIndex !== index),
-              )
-            }
-            onImageFile={(file) => {
-              setImageUploads((current) => [
-                ...current.filter((upload) => upload.projectIndex !== index),
-                { projectIndex: index, file },
-              ]);
-            }}
-          />
-        ))}
-      </div>
+      {projects.length === 0 ? (
+        <div className="content-card empty-state">
+          <h2>还没有项目</h2>
+          <p>这里会在你发布第一个项目后显示作品卡片。</p>
+        </div>
+      ) : (
+        <div className="editable-project-grid">
+          {projects.map((project, index) => (
+            <ProjectCard
+              editing={editing}
+              key={`${project.name}-${index}`}
+              project={project}
+              onChange={(nextProject) => updateProject(index, nextProject)}
+              onDelete={() =>
+                setProjects((current) =>
+                  current.filter((_, currentIndex) => currentIndex !== index),
+                )
+              }
+              onImageFile={(file) => {
+                setImageUploads((current) => [
+                  ...current.filter((upload) => upload.projectIndex !== index),
+                  { projectIndex: index, file },
+                ]);
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <CreateProjectDialog
         open={createOpen}

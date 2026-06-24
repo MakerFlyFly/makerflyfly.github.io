@@ -1165,6 +1165,66 @@ button {
   display: none;
 }
 
+.admin-card {
+  display: grid;
+  gap: 24px;
+}
+
+.admin-status {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.admin-status svg {
+  flex: 0 0 auto;
+  color: var(--cyan);
+}
+
+.admin-status h2 {
+  margin: 0 0 8px;
+  color: var(--foreground);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.admin-status p,
+.admin-warning {
+  margin: 0;
+  color: var(--muted-strong);
+  line-height: 1.8;
+}
+
+.admin-config-grid {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 10px 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: 18px;
+}
+
+.admin-config-grid span {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.admin-config-grid strong {
+  overflow-wrap: anywhere;
+  color: var(--foreground);
+}
+
+.admin-warning {
+  border-radius: 18px;
+  background: rgba(238, 194, 94, 0.18);
+  padding: 12px 16px;
+  color: var(--gold-deep);
+  font-weight: 800;
+}
+
+.admin-actions {
+  margin-bottom: 0;
+}
+
 .editor-field {
   display: grid;
   gap: 7px;

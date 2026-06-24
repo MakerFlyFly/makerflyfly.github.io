@@ -91,7 +91,7 @@ export function HomeHero({ articleCount, projectCount }: HomeHeroProps) {
         <div className="social-row" aria-label="社交入口">
           <motion.a
             className="social-link social-link-github"
-            href="https://github.com/MakerFly"
+            href="https://github.com/MakerFlyFly"
             rel="noreferrer"
             target="_blank"
             aria-label="GitHub"

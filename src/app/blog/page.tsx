@@ -26,6 +26,7 @@ export default function BlogPage() {
   const [draftItems, setDraftItems] = useState<BlogIndexItem[]>([]);
   const [selected, setSelected] = useState<Set<string>>(() => new Set());
   const [saving, setSaving] = useState(false);
+  const canEdit = useAuthStore((state) => state.canEdit);
   const privateKey = useAuthStore((state) => state.privateKey);
   const setPrivateKey = useAuthStore((state) => state.setPrivateKey);
   const getToken = useAuthStore((state) => state.getToken);
@@ -106,55 +107,57 @@ export default function BlogPage() {
         <span className="page-count">{items.length} 篇文章</span>
       </div>
 
-      <motion.div
-        className="toolbar-row"
-        {...cardReveal(reduced, 0.05)}
-        viewport={motionViewport}
-      >
-        {editing ? (
-          <>
-            <MotionLink className="editor-button secondary" href="/write" {...(!reduced ? { whileHover: { scale: 1.03 }, whileTap: { scale: 0.97 } } : {})}>
-              <Plus size={17} />
-              新文章
-            </MotionLink>
-            <MotionButton className="editor-button danger" disabled={saving} type="button" onClick={handleDelete}>
-              <Trash2 size={17} />
-              删除 {selected.size > 0 ? selected.size : ""}
+      {canEdit ? (
+        <motion.div
+          className="toolbar-row"
+          {...cardReveal(reduced, 0.05)}
+          viewport={motionViewport}
+        >
+          {editing ? (
+            <>
+              <MotionLink className="editor-button secondary" href="/write" {...(!reduced ? { whileHover: { scale: 1.03 }, whileTap: { scale: 0.97 } } : {})}>
+                <Plus size={17} />
+                新文章
+              </MotionLink>
+              <MotionButton className="editor-button danger" disabled={saving} type="button" onClick={handleDelete}>
+                <Trash2 size={17} />
+                删除 {selected.size > 0 ? selected.size : ""}
+              </MotionButton>
+              <MotionButton className="editor-button" disabled={saving} type="button" onClick={handleSaveIndex}>
+                {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
+                保存索引
+              </MotionButton>
+              <MotionButton className="editor-button secondary" type="button" onClick={cancelEdit}>
+                <X size={17} />
+                取消
+              </MotionButton>
+            </>
+          ) : (
+            <MotionButton className="editor-button" type="button" onClick={enterEdit}>
+              <Edit3 size={17} />
+              编辑文章
             </MotionButton>
-            <MotionButton className="editor-button" disabled={saving} type="button" onClick={handleSaveIndex}>
-              {saving ? <Loader2 className="spin" size={17} /> : <Save size={17} />}
-              保存索引
-            </MotionButton>
-            <MotionButton className="editor-button secondary" type="button" onClick={cancelEdit}>
-              <X size={17} />
-              取消
-            </MotionButton>
-          </>
-        ) : (
-          <MotionButton className="editor-button" type="button" onClick={enterEdit}>
-            <Edit3 size={17} />
-            编辑文章
-          </MotionButton>
-        )}
-        <MotionLabel className="editor-button secondary">
-          <Upload size={17} />
-          导入 .pem
-          <input
-            ref={fileInputRef}
-            accept=".pem,.key,.txt"
-            type="file"
-            onChange={async (event) => {
-              const file = event.target.files?.[0];
-              event.currentTarget.value = "";
-              if (!file) {
-                return;
-              }
-              setPrivateKey(await readFileAsText(file));
-              toast.success("私钥已导入浏览器内存。");
-            }}
-          />
-        </MotionLabel>
-      </motion.div>
+          )}
+          <MotionLabel className="editor-button secondary">
+            <Upload size={17} />
+            导入 .pem
+            <input
+              ref={fileInputRef}
+              accept=".pem,.key,.txt"
+              type="file"
+              onChange={async (event) => {
+                const file = event.target.files?.[0];
+                event.currentTarget.value = "";
+                if (!file) {
+                  return;
+                }
+                setPrivateKey(await readFileAsText(file));
+                toast.success("私钥已导入浏览器内存。");
+              }}
+            />
+          </MotionLabel>
+        </motion.div>
+      ) : null}
 
       {isLoading ? (
         <div className="content-card empty-state">
@@ -164,6 +167,11 @@ export default function BlogPage() {
       ) : error ? (
         <div className="content-card empty-state">
           <p>{getErrorMessage(error)}</p>
+        </div>
+      ) : groups.length === 0 ? (
+        <div className="content-card empty-state">
+          <h2>还没有文章</h2>
+          <p>这里会在你发布第一篇文章后显示归档。</p>
         </div>
       ) : (
         <div className="blog-year-stack">

@@ -1,6 +1,6 @@
 export const GITHUB_CONFIG = {
-  OWNER: process.env.NEXT_PUBLIC_GITHUB_OWNER ?? "",
-  REPO: process.env.NEXT_PUBLIC_GITHUB_REPO ?? "",
+  OWNER: process.env.NEXT_PUBLIC_GITHUB_OWNER ?? "MakerFlyFly",
+  REPO: process.env.NEXT_PUBLIC_GITHUB_REPO ?? "makerflyfly.github.io",
   BRANCH: process.env.NEXT_PUBLIC_GITHUB_BRANCH ?? "master",
   APP_ID: process.env.NEXT_PUBLIC_GITHUB_APP_ID ?? "",
   ENCRYPT_KEY: process.env.NEXT_PUBLIC_GITHUB_ENCRYPT_KEY ?? "makerfly-dev",

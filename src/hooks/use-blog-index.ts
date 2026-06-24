@@ -14,10 +14,10 @@ const fetcher = async (url: string) => {
 };
 
 export function useBlogIndex() {
-  const privateKey = useAuthStore((state) => state.privateKey);
+  const canEdit = useAuthStore((state) => state.canEdit);
   const { data, error, isLoading, mutate } = useSWR("/blogs/index.json", fetcher);
   const allItems = sortBlogIndex(data ?? []);
-  const visibleItems = visibleBlogIndex(allItems, Boolean(privateKey));
+  const visibleItems = visibleBlogIndex(allItems, canEdit);
 
   return {
     allItems,
