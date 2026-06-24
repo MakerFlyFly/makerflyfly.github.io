@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import { AppHeader } from "@/components/app-header";
 import { BlurredBubblesBackground } from "@/components/blurred-bubbles-background";
+import { RouteScrollReset } from "@/components/route-scroll-reset";
 import { searchIndex } from "@/data/search-index";
 import "./globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({
     <html lang="zh-CN" data-scroll-behavior="smooth">
       <body>
         <div className="site-root">
+          <RouteScrollReset />
           <BlurredBubblesBackground />
           <div className="app-frame">
             <AppHeader searchItems={searchIndex} />
