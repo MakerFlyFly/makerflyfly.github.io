@@ -41,12 +41,16 @@ export function HomeHero({ articleCount, projectCount }: HomeHeroProps) {
           aria-label="创作方向"
           {...pageEnter(reduced, 0.12)}
         >
+          <span>学习</span>
+          <span>·</span>
+          <span>成长</span>
+          <span>·</span>
           <span>想象</span>
           <span>·</span>
           <span>创造</span>
         </motion.div>
         <motion.p className="hero-description" {...pageEnter(reduced, 0.18)}>
-          学习与成长，灵感与创造，这里记录着我探索世界的方式。
+          见到你很高兴 awa
         </motion.p>
       </div>
 
