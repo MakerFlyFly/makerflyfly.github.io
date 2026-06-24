@@ -316,11 +316,12 @@ button {
 
 .home-hero {
   display: grid;
-  min-height: calc(100vh - 124px);
+  min-height: calc(100vh - 84px);
+  min-height: calc(100svh - 84px);
   grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.82fr);
   align-items: center;
   gap: clamp(42px, 6vw, 96px);
-  padding: 56px 0 52px;
+  padding: 56px 0 72px;
 }
 
 .hero-copy {
@@ -338,18 +339,17 @@ button {
   padding-right: 0.06em;
   padding-bottom: 0.12em;
   background:
-    linear-gradient(125deg, #0b74b7 0%, #10aeca 34%, #d89b31 62%, #a85a1c 100%);
+    linear-gradient(125deg, #40bdff 0%, #aee9ff 38%, #fff0c4 59%, #f3b65e 100%);
   background-clip: text;
   color: transparent;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(4rem, 7.4vw, 7.4rem);
   font-weight: 800;
   line-height: 1.16;
-  -webkit-text-stroke: 0.35px rgba(27, 93, 111, 0.42);
+  -webkit-text-stroke: 0.3px rgba(255, 255, 255, 0.72);
   text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.62),
-    0 0 1px rgba(18, 73, 89, 0.54),
-    0 8px 24px rgba(47, 203, 231, 0.16);
+    0 1px 0 rgba(255, 255, 255, 0.72),
+    0 10px 28px rgba(47, 203, 231, 0.14);
 }
 
 .hero-title::before {
@@ -358,11 +358,11 @@ button {
   z-index: -1;
   inset: 0;
   color: transparent;
-  -webkit-text-stroke: 3.5px rgba(255, 255, 255, 0.96);
+  -webkit-text-stroke: 3.25px rgba(255, 255, 255, 0.94);
   text-shadow:
-    0 1px 0 rgba(47, 203, 231, 0.24),
-    0 2px 0 rgba(238, 194, 94, 0.2),
-    0 14px 34px rgba(47, 203, 231, 0.2);
+    0 1px 0 rgba(47, 203, 231, 0.16),
+    0 2px 0 rgba(238, 194, 94, 0.14),
+    0 14px 34px rgba(47, 203, 231, 0.16);
 }
 
 .hero-title::after {
@@ -371,7 +371,7 @@ button {
   z-index: -2;
   inset: 0;
   color: transparent;
-  -webkit-text-stroke: 6px rgba(47, 203, 231, 0.24);
+  -webkit-text-stroke: 5px rgba(47, 203, 231, 0.16);
 }
 
 .hero-slogan {
@@ -953,7 +953,8 @@ button {
 
   .home-hero {
     grid-template-columns: 1fr;
-    min-height: auto;
+    min-height: calc(100vh - 84px);
+    min-height: calc(100svh - 84px);
     padding-top: 72px;
   }
 
