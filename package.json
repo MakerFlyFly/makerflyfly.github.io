@@ -15,7 +15,7 @@
     "react"
   ],
   "author": "MakerFly",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "dependencies": {
     "clsx": "^2.1.1",
