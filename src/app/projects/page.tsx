@@ -70,9 +70,6 @@ export default function ProjectsPage() {
       <div className="page-heading">
         <div>
           <h1 className="page-title">项目</h1>
-          <p className="page-description">
-            记录工具、系统和实验原型。编辑态下可以新增、修改、删除项目，并通过 GitHub App 保存到仓库。
-          </p>
         </div>
         <span className="page-count">{projects.length} 个项目</span>
       </div>

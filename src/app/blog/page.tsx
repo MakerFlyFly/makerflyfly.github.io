@@ -100,9 +100,6 @@ export default function BlogPage() {
       <div className="page-heading">
         <div>
           <h1 className="page-title">文章</h1>
-          <p className="page-description">
-            按年份归档写作、构建日志、设计笔记与实验记录。进入编辑态后可以修改分类、隐藏状态或删除文章。
-          </p>
         </div>
         <span className="page-count">{items.length} 篇文章</span>
       </div>

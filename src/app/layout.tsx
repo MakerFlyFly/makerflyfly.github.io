@@ -6,9 +6,23 @@ import { RouteScrollReset } from "@/components/route-scroll-reset";
 import { searchIndex } from "@/data/search-index";
 import "./globals.css";
 
+const siteDescription = "学习 · 成长 · 想象 · 创造";
+
 export const metadata: Metadata = {
   title: "MakerFly.dev",
-  description: "记录代码、写作、实验与创造的个人博客。",
+  description: siteDescription,
+  openGraph: {
+    title: "MakerFly.dev",
+    description: siteDescription,
+    url: "https://makerflyfly.github.io",
+    siteName: "MakerFly.dev",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "MakerFly.dev",
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({
