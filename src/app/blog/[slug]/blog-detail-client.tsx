@@ -92,20 +92,8 @@ export function BlogDetailClient({ slug }: { slug: string }) {
       className="page-shell blog-detail-shell"
       {...pageEnter(Boolean(reducedMotion))}
     >
-      <div className="blog-detail-head">
-        <div>
-          <p className="home-section-kicker">{config.category ?? "Article"}</p>
-          <h1 className="page-title">{config.title}</h1>
-          <p className="page-description">{config.summary}</p>
-          <div className="tag-row">
-            {(config.tags ?? []).map((tag) => (
-              <span className="tag" key={tag}>
-                #{tag}
-              </span>
-            ))}
-          </div>
-        </div>
-        {canEdit ? (
+      {canEdit ? (
+        <div className="blog-detail-actions">
           <MotionLink
             className="floating-edit-button"
             href={`/write?slug=${encodeURIComponent(slug)}`}
@@ -114,9 +102,17 @@ export function BlogDetailClient({ slug }: { slug: string }) {
             <Edit3 size={17} />
             编辑
           </MotionLink>
-        ) : null}
-      </div>
-      <BlogPreview markdown={markdown} />
+        </div>
+      ) : null}
+      <BlogPreview
+        cover={config.cover}
+        date={config.date}
+        markdown={markdown}
+        slug={slug}
+        summary={config.summary}
+        tags={config.tags ?? []}
+        title={config.title}
+      />
     </motion.section>
   );
 }

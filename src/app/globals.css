@@ -1296,6 +1296,7 @@ button {
 .write-sidebar,
 .write-preview-card,
 .article-view,
+.article-side-card,
 .article-toc,
 .editable-project-card,
 .dialog-card {
@@ -1386,6 +1387,17 @@ button {
   margin-bottom: 26px;
 }
 
+.blog-detail-shell {
+  padding-top: clamp(54px, 7vw, 86px);
+}
+
+.blog-detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: min(1120px, 100%);
+  margin: 0 auto 14px;
+}
+
 .floating-edit-button {
   display: inline-flex;
   min-height: 44px;
@@ -1402,15 +1414,54 @@ button {
 
 .article-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 22px;
+  grid-template-columns: minmax(0, 820px) 220px;
+  justify-content: center;
+  gap: 24px;
   align-items: start;
+  width: min(1120px, 100%);
+  margin: 0 auto;
 }
 
 .article-view {
-  padding: clamp(22px, 4vw, 42px);
+  width: 100%;
+  padding: clamp(24px, 4vw, 42px);
   color: var(--foreground);
   line-height: 1.9;
+}
+
+.article-readable-head {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-bottom: clamp(22px, 4vw, 36px);
+  text-align: center;
+}
+
+.article-view .article-readable-head h1 {
+  max-width: 760px;
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(1.65rem, 2.4vw, 2.25rem);
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.article-readable-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  max-width: 640px;
+  color: var(--cyan);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.article-readable-date {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 800;
 }
 
 .article-view h1,
@@ -1421,23 +1472,24 @@ button {
 }
 
 .article-view h1 {
-  margin-top: 0;
-  font-size: clamp(2rem, 4vw, 3.4rem);
+  margin-top: 2em;
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
 }
 
 .article-view h2 {
-  margin-top: 2.1em;
-  font-size: 1.55rem;
+  margin-top: 2.15em;
+  font-size: 1.35rem;
 }
 
 .article-view h3 {
-  margin-top: 1.8em;
-  font-size: 1.25rem;
+  margin-top: 1.85em;
+  font-size: 1.12rem;
 }
 
 .article-view p,
 .article-view li {
   color: var(--muted-strong);
+  font-size: 1rem;
 }
 
 .article-view code {
@@ -1449,10 +1501,11 @@ button {
 
 .article-view pre {
   overflow-x: auto;
-  border-radius: 18px;
+  border-radius: 14px;
   background: rgba(7, 23, 71, 0.92);
   color: #effbff;
   padding: 18px;
+  margin: 1.15em 0 1.65em;
 }
 
 .article-view pre code {
@@ -1471,15 +1524,40 @@ button {
   color: var(--muted);
 }
 
-.article-toc {
+.article-sidebar {
   position: sticky;
   top: 112px;
+  display: grid;
+  gap: 14px;
+}
+
+.article-side-card {
   display: grid;
   gap: 10px;
   padding: 18px;
 }
 
-.article-toc strong {
+.article-cover-card {
+  padding: 12px;
+}
+
+.article-cover-card img {
+  display: block;
+  width: 100%;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.article-summary-card p {
+  max-height: 240px;
+  overflow: auto;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.article-side-card strong {
   color: var(--foreground);
 }
 
@@ -1707,9 +1785,22 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .article-toc {
+  .article-layout,
+  .blog-detail-actions {
+    width: min(820px, 100%);
+  }
+
+  .article-sidebar {
     position: static;
-    order: -1;
+    order: 2;
+  }
+
+  .article-cover-card {
+    max-width: 280px;
+  }
+
+  .article-toc {
+    align-content: start;
   }
 }
 
@@ -1726,6 +1817,44 @@ button {
 
   .blog-row-editor {
     min-width: 0;
+  }
+
+  .blog-detail-shell {
+    padding-top: 44px;
+  }
+
+  .article-view {
+    padding: 22px 18px;
+  }
+
+  .article-readable-head {
+    margin-bottom: 24px;
+  }
+
+  .article-view .article-readable-head h1 {
+    font-size: clamp(1.42rem, 7vw, 1.85rem);
+    line-height: 1.35;
+  }
+
+  .article-readable-tags {
+    gap: 6px 10px;
+    font-size: 0.86rem;
+  }
+
+  .article-view h1 {
+    font-size: 1.42rem;
+  }
+
+  .article-view h2 {
+    font-size: 1.22rem;
+  }
+
+  .article-view h3 {
+    font-size: 1.06rem;
+  }
+
+  .article-side-card {
+    padding: 16px;
   }
 
   .write-shell {

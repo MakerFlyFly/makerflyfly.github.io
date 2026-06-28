@@ -5,9 +5,14 @@ import { BlogDetailClient } from "./blog-detail-client";
 export const dynamicParams = false;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  const params = (blogIndex as BlogIndexItem[]).map((item) => ({
-    slug: item.slug,
-  }));
+  const slugs = new Set<string>();
+
+  for (const item of blogIndex as BlogIndexItem[]) {
+    slugs.add(item.slug);
+    slugs.add(encodeURIComponent(item.slug));
+  }
+
+  const params = Array.from(slugs).map((slug) => ({ slug }));
 
   return params.length > 0 ? params : [{ slug: "__empty__" }];
 }
