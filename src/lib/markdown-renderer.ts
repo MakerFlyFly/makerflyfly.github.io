@@ -25,7 +25,7 @@ function slugifyHeading(value: string, index: number) {
 export async function renderMarkdown(markdown: string) {
   const toc: TocItem[] = [];
   const withAnchors = markdown
-    .split("\n")
+    .split(/\r?\n/)
     .map((line) => {
       const match = /^(#{2,3})\s+(.+)$/.exec(line);
 

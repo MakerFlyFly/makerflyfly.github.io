@@ -72,9 +72,11 @@ export function WriteSidebar() {
         <label className="editor-field">
           <span>标签</span>
           <input
+            placeholder="docker, windows, 环境配置"
             value={tags.join(", ")}
             onChange={(event) => setTags(splitTags(event.target.value))}
           />
+          <small>用逗号、中文逗号、空格分隔多个标签</small>
         </label>
         <label className="editor-field">
           <span>分类</span>
