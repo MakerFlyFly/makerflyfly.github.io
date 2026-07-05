@@ -551,54 +551,40 @@ Distance Vector = 用来计算和更新 Routing Table 的信息
 ### 13.1 公式
 
 \[
-d_a(b)=\min_i\{c(a,i)+d_i(b)\}
+d_a(b)=\min_{i\in N(a)}\{c(a,i)+d_i(b)\}
 \]
 
-### 13.2 含义
+它读作：从 node \(a\) 到 destination \(b\) 的最小代价，是在所有 neighbor \(i\) 中，选出“先到 \(i\)，再由 \(i\) 到 \(b\)”总代价最小的一条。
 
-a 到 b 的最小 cost，等于在所有 neighbor \(i\) 中，选择：
+### 13.2 符号表
 
-```text
-a 到 i 的 cost + i 到 b 的 cost
-```
+| 符号 | 含义 |
+|---|---|
+| \(N(a)\) | node \(a\) 的所有 neighbors |
+| \(d_a(b)\) | node \(a\) 到 destination \(b\) 的 least-cost path cost |
+| \(c(a,i)\) | node \(a\) 到 neighbor \(i\) 的直接 link cost |
+| \(d_i(b)\) | neighbor \(i\) 到 destination \(b\) 的 least-cost path cost |
 
-的最小值。
-
-其中：
-
-- \(d_a(b)\)：node \(a\) 到 destination \(b\) 的 least-cost path cost
-- \(c(a,i)\)：node \(a\) 到 neighbor \(i\) 的 link cost
-- \(d_i(b)\)：neighbor \(i\) 到 destination \(b\) 的 least-cost path cost
-
-### 13.3 简单例子
+### 13.3 代入例子
 
 Router \(A\) 想到 \(D\)，它有两个 neighbors：\(B\) 和 \(C\)。
 
-已知：
+| 候选 next hop \(i\) | \(c(A,i)\) | \(d_i(D)\) | 总 cost |
+|---|---:|---:|---:|
+| \(B\) | 1 | 3 | \(1+3=4\) |
+| \(C\) | 2 | 1 | \(2+1=3\) |
 
-```text
-c(A,B) = 1
-d_B(D) = 3
-
-c(A,C) = 2
-d_C(D) = 1
-```
-
-那么：
+代入 Bellman-Ford equation：
 
 \[
-d_A(D)=\min\{c(A,B)+d_B(D), c(A,C)+d_C(D)\}
+d_A(D)=\min\{c(A,B)+d_B(D),\ c(A,C)+d_C(D)\}
 \]
 
 \[
-d_A(D)=\min\{1+3, 2+1\}
+d_A(D)=\min\{1+3,\ 2+1\}=\min\{4,\ 3\}=3
 \]
 
-\[
-d_A(D)=\min\{4, 3\}=3
-\]
-
-所以 Router A 会选择经过 C 去 D。
+结论：Router \(A\) 会选择 \(C\) 作为 next hop，因为经过 \(C\) 的总代价更低。
 
 ---
 
@@ -616,29 +602,33 @@ d_A(D)=\min\{4, 3\}=3
 
 如果提供 least cost path 的 neighbor 发生变化，node a 就会更新自己的 routing table 和 distance vector。
 
-### 14.2 简单例子
+### 14.2 更新规则
+
+当 Router \(A\) 从某个 neighbor \(N\) 收到新的 distance vector 时，先计算候选 cost：
+
+\[
+\text{candidateCost}_N(D)=c(A,N)+d_N(D)
+\]
+
+只有满足下面任意一种情况，Router \(A\) 才更新自己的 routing table：
+
+1. \(\text{candidateCost}_N(D)\) 比当前已知 cost 更小。
+2. 当前 route 的 next hop 发生变化，需要同步新的 next hop 和 cost。
+
+### 14.3 简单例子
 
 Router A 原本到 D 的 route 是：
 
-```text
-A → B → D
-cost = 5
-```
+| route | next hop | cost |
+|---|---|---:|
+| \(A\to B\to D\) | \(B\) | 5 |
+| \(A\to C\to D\) | \(C\) | 3 |
 
-后来 A 收到 neighbor C 的 distance vector，发现：
+因为 \(3<5\)，所以 A 更新自己的 routing table：
 
-```text
-A → C → D
-cost = 3
-```
-
-因为 3 比 5 小，所以 A 更新自己的 routing table：
-
-```text
-Destination: D
-Next hop: C
-Cost: 3
-```
+| Destination | Next hop | Cost |
+|---|---|---:|
+| D | C | 3 |
 
 ---
 
@@ -762,62 +752,34 @@ A 才知道 D 不可达
 
 #### 例子
 
-原本：
+原本的链路是：
 
 ```text
 A —— B —— C —— D
 ```
 
-B 到 D 的 route 是：
+C 到 D 的直接链路断开后，C 应该把 \(D\) 标记为 unreachable。但在 Distance Vector 中，C 只能听 neighbor 的通告，于是可能误信 B 的旧信息。
 
-```text
-B → C → D
-cost = 2
-```
+关键递推式是：
 
-现在 C 到 D 断了：
+\[
+\text{newCost}_X(D)=c(X,Y)+d_Y(D)
+\]
 
-```text
-A —— B —— C    D
-```
+其中 \(X\) 是正在更新的 router，\(Y\) 是它误信的 neighbor。
 
-C 应该知道 D 不可达。
+| 轮次 | B 听到的信息 | C 听到的信息 | 更新结果 |
+|---:|---|---|---|
+| 0 | B 仍以为 \(B\to C\to D\) cost 为 2 | C 发现直连 D 断开 | 信息还没收敛 |
+| 1 | - | C 听到 B 说 \(d_B(D)=2\) | \(d_C(D)=1+2=3\) |
+| 2 | B 听到 C 说 \(d_C(D)=3\) | - | \(d_B(D)=1+3=4\) |
+| 3 | - | C 听到 B 说 \(d_B(D)=4\) | \(d_C(D)=1+4=5\) |
 
-但 C 听到 B 说：
+于是 cost 会被一轮一轮放大：
 
-```text
-B 到 D cost = 2
-```
-
-于是 C 误以为：
-
-```text
-我可以通过 B 去 D
-```
-
-所以 C 更新为：
-
-```text
-C 到 D = 1 + 2 = 3
-```
-
-然后 B 又听到 C 说：
-
-```text
-C 到 D cost = 3
-```
-
-于是 B 更新为：
-
-```text
-B 到 D = 1 + 3 = 4
-```
-
-然后 C 又变成 5，B 又变成 6：
-
-```text
-2 → 3 → 4 → 5 → 6 → ...
-```
+\[
+2\to 3\to 4\to 5\to 6\to \cdots
+\]
 
 这就是 **count-to-infinity problem**。
 
@@ -1149,115 +1111,68 @@ A ——1—— B ——2—— D
 
 已知：
 
-```text
-A-B cost = 1
-A-C cost = 4
-B-C cost = 1
-B-D cost = 2
-```
+| Link | Cost |
+|---|---:|
+| \(A-B\) | 1 |
+| \(A-C\) | 4 |
+| \(B-C\) | 1 |
+| \(B-D\) | 2 |
 
 现在从 A 开始计算。
 
+每一轮都用同一个更新公式：
+
+\[
+D(v)=\min(D(v),\ D(u)+c(u,v))
+\]
+
+其中：
+
+- \(u\)：这一轮刚加入 Visited_List 的 node
+- \(v\)：\(u\) 的 neighbor
+- \(D(v)\)：从 source \(A\) 到 \(v\) 的当前最小估计 cost
+- \(c(u,v)\)：\(u\) 到 \(v\) 的 link cost
+
 #### Initialization
 
-```text
-Visited_List = {A}
-
-D(B) = 1
-D(C) = 4
-D(D) = ∞
-```
+| Visited_List | \(D(B)\) | \(D(C)\) | \(D(D)\) |
+|---|---:|---:|---:|
+| \(\{A\}\) | 1 | 4 | \(\infty\) |
 
 #### 第 1 轮：选择 B
 
-当前最小的是：
+当前未确定节点中，\(D(B)=1\) 最小，所以把 \(B\) 加入 Visited_List。
 
-```text
-D(B) = 1
-```
+| 更新目标 | 公式 | 新值 | 是否更新 |
+|---|---|---:|---|
+| \(C\) | \(D(C)=\min(4,\ 1+1)\) | 2 | 更新 |
+| \(D\) | \(D(D)=\min(\infty,\ 1+2)\) | 3 | 更新 |
 
-所以：
+更新后：
 
-```text
-Visited_List = {A, B}
-```
-
-用 B 更新 C：
-
-```text
-A → B → C = 1 + 1 = 2
-```
-
-比原来的：
-
-```text
-D(C) = 4
-```
-
-更小，所以更新：
-
-```text
-D(C) = 2
-```
-
-用 B 更新 D：
-
-```text
-A → B → D = 1 + 2 = 3
-```
-
-所以：
-
-```text
-D(D) = 3
-```
+| Visited_List | \(D(B)\) | \(D(C)\) | \(D(D)\) |
+|---|---:|---:|---:|
+| \(\{A,B\}\) | 1 | 2 | 3 |
 
 #### 第 2 轮：选择 C
 
-现在：
+当前未确定节点中，\(D(C)=2\) 最小，所以选择 \(C\)。因为 \(C\) 不能提供更短的 \(D\) 路径，所以 \(D(D)\) 不变。
 
-```text
-D(C) = 2
-D(D) = 3
-```
-
-选择 C：
-
-```text
-Visited_List = {A, B, C}
-```
-
-C 没有提供更短到 D 的路径，所以 D 不变。
+| Visited_List | \(D(B)\) | \(D(C)\) | \(D(D)\) |
+|---|---:|---:|---:|
+| \(\{A,B,C\}\) | 1 | 2 | 3 |
 
 #### 第 3 轮：选择 D
 
-```text
-Visited_List = {A, B, C, D}
-```
+最后选择 \(D\)，算法结束。
 
 最终结果：
 
-```text
-A 到 B: cost = 1，path = A → B
-A 到 C: cost = 2，path = A → B → C
-A 到 D: cost = 3，path = A → B → D
-```
-
-所以 A 的 routing table 可以根据这些结果生成：
-
-```text
-Destination: B
-Next hop: B
-Cost: 1
-
-Destination: C
-Next hop: B
-Cost: 2
-
-Destination: D
-Next hop: B
-Cost: 3
-```
+| Destination | Cost | Path | Next hop |
+|---|---:|---|---|
+| B | 1 | \(A\to B\) | B |
+| C | 2 | \(A\to B\to C\) | B |
+| D | 3 | \(A\to B\to D\) | B |
 
 ---
 
@@ -1312,27 +1227,21 @@ C ——1—— D
 
 如果 A 要到 D：
 
-```text
-Path 1: A → B → D
-cost = 1 + 2 = 3
+可以直接用 Dijkstra 的候选路径思想比较：
 
-Path 2: A → C → D
-cost = 4 + 1 = 5
-```
+\[
+D_A(D)=\min\{c(A,B)+c(B,D),\ c(A,C)+c(C,D)\}
+\]
 
-所以 A 选择：
+\[
+D_A(D)=\min\{1+2,\ 4+1\}=\min\{3,\ 5\}=3
+\]
 
-```text
-A → B → D
-```
+所以 A 选择 \(A\to B\to D\)，routing table 中记录：
 
-A 的 routing table 中可以记录：
-
-```text
-Destination: D
-Next hop: B
-Cost: 3
-```
+| Destination | Next hop | Cost |
+|---|---|---:|
+| D | B | 3 |
 
 ---
 

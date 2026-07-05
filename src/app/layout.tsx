@@ -4,6 +4,7 @@ import { AppHeader } from "@/components/app-header";
 import { BlurredBubblesBackground } from "@/components/blurred-bubbles-background";
 import { RouteScrollReset } from "@/components/route-scroll-reset";
 import { searchIndex } from "@/data/search-index";
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
 const siteDescription = "学习 · 成长 · 想象 · 创造";

@@ -27,9 +27,10 @@ async function fetchText(url: string) {
 }
 
 export async function loadBlog(slug: string): Promise<LoadedBlog> {
+  const encodedSlug = encodeURIComponent(slug);
   const [config, markdown] = await Promise.all([
-    fetchJson<BlogConfig>(`/blogs/${slug}/config.json`),
-    fetchText(`/blogs/${slug}/index.md`),
+    fetchJson<BlogConfig>(`/blogs/${encodedSlug}/config.json`),
+    fetchText(`/blogs/${encodedSlug}/index.md`),
   ]);
 
   return { slug, config, markdown };

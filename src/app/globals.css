@@ -1531,6 +1531,32 @@ button {
   padding: 0;
 }
 
+.article-view .katex {
+  color: var(--foreground);
+  font-size: 1.02em;
+}
+
+.article-view .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 1.35em 0 1.55em;
+  padding: 0.35rem 0.25rem;
+}
+
+.article-view .katex-display > .katex {
+  white-space: nowrap;
+}
+
+.article-view pre.math-fallback {
+  background: rgba(47, 203, 231, 0.1);
+  color: #123c9c;
+}
+
+.article-view code.math-fallback {
+  color: #123c9c;
+}
+
 .article-view img {
   max-width: 100%;
   border-radius: 18px;
