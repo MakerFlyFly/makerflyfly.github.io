@@ -334,15 +334,12 @@ int main() {
 }
 ```
 ________________________________________
-2. 例题指引
-顺序	题目	难度	对应知识点
-1	203. Remove Linked List Elements
-Easy	删除指定值节点，对应 DeleteNode
-2	83. Remove Duplicates from Sorted List
-Easy	遍历链表，删除重复节点
-3	876. Middle of the Linked List
-Easy	链表遍历，理解 currNode = currNode->next
-4	206. Reverse Linked List
-Easy	修改 next 指针
-5	21. Merge Two Sorted Lists
-Easy	连接两个链表
+## 2. LeetCode 例题指引
+
+| 顺序 | 题目 | 难度 | 对应知识点 |
+| --- | --- | --- | --- |
+| 1 | 203. Remove Linked List Elements | Easy | 删除指定值节点，对应 DeleteNode |
+| 2 | 83. Remove Duplicates from Sorted List | Easy | 遍历链表，删除重复节点 |
+| 3 | 876. Middle of the Linked List | Easy | 链表遍历，理解 currNode = currNode->next |
+| 4 | 206. Reverse Linked List | Easy | 修改 next 指针 |
+| 5 | 21. Merge Two Sorted Lists | Easy | 连接两个链表 |
