@@ -36,11 +36,14 @@ function renderFormula(source: string, displayMode: boolean) {
   const expression = source.trim();
 
   try {
-    return katex.renderToString(expression, {
+    const rendered = katex.renderToString(expression, {
       displayMode,
+      output: "mathml",
       throwOnError: false,
       strict: "ignore",
     });
+
+    return displayMode ? `<div class="katex-display">${rendered}</div>` : rendered;
   } catch {
     const escaped = escapeHtml(expression);
     return displayMode
