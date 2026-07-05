@@ -2,9 +2,10 @@
   {
     "slug": "network-layer-routing-学习笔记",
     "title": "Network Layer Routing 学习笔记",
-    "date": "2026-07-04",
+    "date": "2026-07-05",
     "summary": "> 主题：CST309 Computer Networks and Communication — Network Layer Part 2: Routing  \n> 目标：理解 Router 如何转发 packet、Routing Table 如何产生与更新，以及 Dynamic Routing 中 Distance Vector 与 Link-State 两类协议的关系。",
-    "tags": []
+    "tags": [],
+    "category": "ComputerNetworks"
   },
   {
     "slug": "为什么vibe-coding-的你一定要掌握-harness-engineering-驾驭工程",
