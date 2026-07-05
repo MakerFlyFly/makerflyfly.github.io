@@ -1,0 +1,9 @@
+{
+  "title": "Binary Tree，二叉树",
+  "date": "2026-07-05",
+  "summary": "每个节点最多只能有两个孩子的树",
+  "tags": [
+    "algorithm"
+  ],
+  "category": "algorithm"
+}
