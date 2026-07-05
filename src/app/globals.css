@@ -1525,10 +1525,20 @@ button {
   margin: 1.15em 0 1.65em;
 }
 
+.article-view pre.shiki {
+  background: rgba(7, 23, 71, 0.92) !important;
+}
+
 .article-view pre code {
+  display: grid;
+  min-width: max-content;
   background: transparent;
   color: inherit;
   padding: 0;
+}
+
+.article-view pre code .line {
+  min-height: 1.55em;
 }
 
 .article-table-wrap {

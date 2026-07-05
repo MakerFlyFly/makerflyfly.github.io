@@ -1,5 +1,6 @@
 import katex from "katex";
 import { marked } from "marked";
+import { codeToHtml } from "shiki";
 
 export interface TocItem {
   id: string;
@@ -30,6 +31,15 @@ function escapeHtml(value: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function unescapeHtml(value: string) {
+  return value
+    .replace(/&quot;/g, "\"")
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
 }
 
 function renderFormula(source: string, displayMode: boolean) {
@@ -132,6 +142,42 @@ function wrapMarkdownTables(html: string) {
   });
 }
 
+const languageAliases = new Map([
+  ["c++", "cpp"],
+  ["cxx", "cpp"],
+]);
+
+function normalizeCodeLanguage(language: string) {
+  const normalized = language.trim().toLowerCase();
+  return languageAliases.get(normalized) ?? normalized;
+}
+
+async function highlightCodeBlocks(html: string) {
+  const codeBlockPattern =
+    /<pre><code(?: class="language-([^"]+)")?>([\s\S]*?)<\/code><\/pre>/g;
+  const replacements = await Promise.all(
+    [...html.matchAll(codeBlockPattern)].map(async (match) => {
+      const [block, language = "text", escapedCode] = match;
+      const code = unescapeHtml(escapedCode.replace(/\n$/, ""));
+
+      try {
+        const highlighted = await codeToHtml(code, {
+          lang: normalizeCodeLanguage(language),
+          theme: "github-dark",
+        });
+        return [block, highlighted] as const;
+      } catch {
+        return [block, block] as const;
+      }
+    }),
+  );
+
+  return replacements.reduce(
+    (content, [from, to]) => content.split(from).join(to),
+    html,
+  );
+}
+
 export async function renderMarkdown(markdown: string) {
   const toc: TocItem[] = [];
   const withAnchors = markdown
@@ -159,9 +205,10 @@ export async function renderMarkdown(markdown: string) {
     breaks: true,
   });
   const htmlString = typeof html === "string" ? html : String(html);
+  const highlightedHtml = await highlightCodeBlocks(htmlString);
 
   return {
-    html: wrapMarkdownTables(htmlString),
+    html: wrapMarkdownTables(highlightedHtml),
     toc,
   };
 }
