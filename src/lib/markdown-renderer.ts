@@ -121,6 +121,17 @@ function renderMath(markdown: string) {
   return rendered.join("\n");
 }
 
+function wrapMarkdownTables(html: string) {
+  return html.replace(/<table>([\s\S]*?)<\/table>/g, (match) => {
+    if (match.includes('class="article-table"')) {
+      return match;
+    }
+
+    const table = match.replace("<table>", '<table class="article-table">');
+    return `<div class="article-table-wrap">${table}</div>`;
+  });
+}
+
 export async function renderMarkdown(markdown: string) {
   const toc: TocItem[] = [];
   const withAnchors = markdown
@@ -147,9 +158,10 @@ export async function renderMarkdown(markdown: string) {
     gfm: true,
     breaks: true,
   });
+  const htmlString = typeof html === "string" ? html : String(html);
 
   return {
-    html: typeof html === "string" ? html : String(html),
+    html: wrapMarkdownTables(htmlString),
     toc,
   };
 }

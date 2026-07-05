@@ -1531,6 +1531,61 @@ button {
   padding: 0;
 }
 
+.article-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 1.2em 0 1.8em;
+  border: 1px solid rgba(85, 118, 128, 0.2);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 16px 40px rgba(27, 80, 96, 0.08);
+}
+
+.article-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--muted-strong);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+.article-table th,
+.article-table td {
+  min-width: 112px;
+  padding: 12px 14px;
+  border-right: 1px solid rgba(85, 118, 128, 0.16);
+  border-bottom: 1px solid rgba(85, 118, 128, 0.16);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.article-table th:last-child,
+.article-table td:last-child {
+  border-right: 0;
+}
+
+.article-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.article-table th {
+  background: linear-gradient(180deg, rgba(47, 203, 231, 0.12), rgba(255, 255, 255, 0.72));
+  color: var(--foreground);
+  font-weight: 900;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.article-table td {
+  background: rgba(255, 255, 255, 0.46);
+}
+
+.article-table tr:nth-child(even) td {
+  background: rgba(47, 203, 231, 0.045);
+}
+
 .article-view .katex {
   color: var(--foreground);
   font-size: 1.02em;
@@ -1571,13 +1626,17 @@ button {
   position: sticky;
   grid-column: 3;
   top: 112px;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
   min-width: 0;
+  max-height: calc(100dvh - 128px);
+  overflow: hidden;
 }
 
 .article-side-card {
   display: grid;
+  flex: 0 0 auto;
   gap: 10px;
   padding: 18px;
 }
@@ -1602,14 +1661,50 @@ button {
   line-height: 1.75;
 }
 
+.article-summary-card p,
+.article-toc {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(85, 118, 128, 0.46) rgba(47, 203, 231, 0.08);
+}
+
+.article-summary-card p::-webkit-scrollbar,
+.article-toc::-webkit-scrollbar,
+.article-table-wrap::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.article-summary-card p::-webkit-scrollbar-thumb,
+.article-toc::-webkit-scrollbar-thumb,
+.article-table-wrap::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(85, 118, 128, 0.44);
+}
+
+.article-summary-card p::-webkit-scrollbar-track,
+.article-toc::-webkit-scrollbar-track,
+.article-table-wrap::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: rgba(47, 203, 231, 0.08);
+}
+
 .article-side-card strong {
   color: var(--foreground);
+}
+
+.article-toc {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  align-content: start;
+  padding-right: 14px;
 }
 
 .article-toc a {
   color: var(--muted);
   font-size: 0.86rem;
   font-weight: 800;
+  line-height: 1.55;
 }
 
 .article-toc a:hover {
@@ -1843,6 +1938,8 @@ button {
   .article-sidebar {
     position: static;
     order: 2;
+    max-height: none;
+    overflow: visible;
   }
 
   .article-cover-card {
@@ -1851,6 +1948,8 @@ button {
 
   .article-toc {
     align-content: start;
+    overflow: visible;
+    padding-right: 18px;
   }
 }
 
