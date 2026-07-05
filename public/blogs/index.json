@@ -1,15 +1,5 @@
 [
   {
-    "slug": "binary-tree-二叉树",
-    "title": "Binary Tree，二叉树",
-    "date": "2026-07-05",
-    "summary": "每个节点最多只能有两个孩子的树",
-    "tags": [
-      "algorithm"
-    ],
-    "category": "algorithm"
-  },
-  {
     "slug": "network-layer-routing-学习笔记",
     "title": "Network Layer Routing 学习笔记",
     "date": "2026-07-05",
@@ -22,6 +12,16 @@
     "title": "Linked List 代码模板与例题",
     "date": "2026-07-05",
     "summary": "",
+    "tags": [
+      "algorithm"
+    ],
+    "category": "algorithm"
+  },
+  {
+    "slug": "binary-tree-二叉树",
+    "title": "Binary Tree，二叉树",
+    "date": "2026-07-05",
+    "summary": "二叉树 and AVL 二叉树",
     "tags": [
       "algorithm"
     ],

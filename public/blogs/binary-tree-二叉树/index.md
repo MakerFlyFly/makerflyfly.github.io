@@ -18,7 +18,7 @@
        /
       2
      /
-5
+    5
 ```
 
 Depth of a node = 从 root 到这个 node 经过几条边
