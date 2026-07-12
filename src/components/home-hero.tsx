@@ -101,7 +101,7 @@ export function HomeHero({ articleCount, projectCount }: HomeHeroProps) {
           </motion.a>
           <motion.a
             className="social-link social-link-email"
-            href="mailto:hello@makerfly.dev"
+            href="mailto:qwq463001@gmail.com"
             aria-label="邮件"
             {...buttonTap(reduced)}
           >
