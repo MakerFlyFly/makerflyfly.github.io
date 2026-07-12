@@ -1,0 +1,9 @@
+{
+  "title": "DFS，BFS笔记总结",
+  "date": "2026-07-12",
+  "summary": "Can be implemented with a stack to remember where it should go when it reaches a dead end.",
+  "tags": [
+    "DataStructures"
+  ],
+  "category": "#DataStructures"
+}

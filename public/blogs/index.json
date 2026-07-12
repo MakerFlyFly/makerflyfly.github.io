@@ -1,5 +1,35 @@
 [
   {
+    "slug": "huffman-笔记总结",
+    "title": "Huffman笔记总结",
+    "date": "2026-07-12",
+    "summary": "解释：每一个字符使用相同数量的 bits",
+    "tags": [
+      "DataStructures"
+    ],
+    "category": "#DataStructures"
+  },
+  {
+    "slug": "graph-笔记总结",
+    "title": "Graph笔记总结",
+    "date": "2026-07-12",
+    "summary": "A graph is a mathematical object that is used to model different situations – objects and processes.",
+    "tags": [
+      "DataStructures"
+    ],
+    "category": "#DataStructures"
+  },
+  {
+    "slug": "dfs-bfs-笔记总结",
+    "title": "DFS，BFS笔记总结",
+    "date": "2026-07-12",
+    "summary": "Can be implemented with a stack to remember where it should go when it reaches a dead end.",
+    "tags": [
+      "DataStructures"
+    ],
+    "category": "#DataStructures"
+  },
+  {
     "slug": "stack-and-queue-模板整理",
     "title": "Stack and Queue 模板整理",
     "date": "2026-07-06",

@@ -1,0 +1,9 @@
+{
+  "title": "Huffman笔记总结",
+  "date": "2026-07-12",
+  "summary": "解释：每一个字符使用相同数量的 bits",
+  "tags": [
+    "DataStructures"
+  ],
+  "category": "#DataStructures"
+}
