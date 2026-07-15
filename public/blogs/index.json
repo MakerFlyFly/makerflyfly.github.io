@@ -38,16 +38,6 @@
     "category": "#DataStructures"
   },
   {
-    "slug": "linked-list-代码模板与例题",
-    "title": "Linked List 代码模板与例题",
-    "date": "2026-07-05",
-    "summary": "",
-    "tags": [
-      "algorithm"
-    ],
-    "category": "algorithm"
-  },
-  {
     "slug": "binary-tree-二叉树",
     "title": "Binary Tree，二叉树",
     "date": "2026-07-05",
@@ -64,6 +54,16 @@
     "summary": "> 主题：CST309 Computer Networks and Communication — Network Layer Part 2: Routing \n\n> 目标：理解 Router 如何转发 packet、Routing Table 如何产生与更新，以及 Dynamic Routing 中 Distance Vector 与 Link-State 两类协议的关系。",
     "tags": [],
     "category": "ComputerNetworks"
+  },
+  {
+    "slug": "linked-list-代码模板与例题",
+    "title": "Linked List 代码模板与例题",
+    "date": "2026-07-05",
+    "summary": "",
+    "tags": [
+      "DataStructures"
+    ],
+    "category": "DataStructures"
   },
   {
     "slug": "为什么vibe-coding-的你一定要掌握-harness-engineering-驾驭工程",
