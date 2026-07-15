@@ -62,6 +62,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
           <MotionLink
             className="editor-button"
             href="/blog"
+            prefetch={false}
             {...buttonTap(Boolean(reducedMotion))}
           >
             返回文章列表
@@ -97,6 +98,7 @@ export function BlogDetailClient({ slug }: { slug: string }) {
           <MotionLink
             className="floating-edit-button"
             href={`/write?slug=${encodeURIComponent(slug)}`}
+            prefetch={false}
             {...buttonTap(Boolean(reducedMotion))}
           >
             <Edit3 size={17} />

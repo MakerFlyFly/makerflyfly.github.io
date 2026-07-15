@@ -1,5 +1,25 @@
 [
   {
+    "slug": "mst-笔记总结",
+    "title": "MST笔记总结",
+    "date": "2026-07-15",
+    "summary": "A spanning tree of a graph is just a subgraph that contains all the vertices and is a tree.",
+    "tags": [
+      "DataStructures"
+    ],
+    "category": "#DataStructures"
+  },
+  {
+    "slug": "shortest-path-algorithm-笔记总结",
+    "title": "Shortest Path Algorithm笔记总结",
+    "date": "2026-07-15",
+    "summary": "How can we find the shortest route between two points on a road map?",
+    "tags": [
+      "DataStructures"
+    ],
+    "category": "#DataStructures"
+  },
+  {
     "slug": "huffman-笔记总结",
     "title": "Huffman笔记总结",
     "date": "2026-07-12",

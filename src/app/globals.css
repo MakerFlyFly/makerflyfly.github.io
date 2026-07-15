@@ -698,10 +698,19 @@ button {
   gap: 18px;
   border-radius: 18px;
   padding: 14px;
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease;
 }
 
 .home-article-row:hover {
   background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.58);
+}
+
+.home-article-row:hover strong {
+  color: var(--cyan);
 }
 
 .home-article-row time {
@@ -1353,6 +1362,11 @@ button {
   color: var(--foreground);
   font-size: 1rem;
   font-weight: 900;
+  transition: color 180ms ease;
+}
+
+.blog-title-link:hover {
+  color: var(--cyan);
 }
 
 .blog-list-item p {

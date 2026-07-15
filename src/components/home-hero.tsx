@@ -78,11 +78,11 @@ export function HomeHero({ articleCount, projectCount }: HomeHeroProps) {
         </div>
 
         <div className="profile-stats" aria-label="内容统计">
-          <MotionLink className="profile-stat" href="/blog" {...buttonTap(reduced)}>
+          <MotionLink className="profile-stat" href="/blog" prefetch={false} {...buttonTap(reduced)}>
             <span>文章</span>
             <strong>{String(articleCount).padStart(2, "0")}</strong>
           </MotionLink>
-          <MotionLink className="profile-stat" href="/projects" {...buttonTap(reduced)}>
+          <MotionLink className="profile-stat" href="/projects" prefetch={false} {...buttonTap(reduced)}>
             <span>项目</span>
             <strong>{String(projectCount).padStart(2, "0")}</strong>
           </MotionLink>

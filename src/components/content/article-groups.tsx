@@ -90,6 +90,7 @@ export function ArticleGroups({ groups, initialVisible = 3 }: ArticleGroupsProps
                   id={article.slug}
                   href={`/blog/${article.slug}`}
                   key={article.slug}
+                  prefetch={false}
                 >
                   <time className="article-date" dateTime={article.date}>
                     {article.date.slice(5)}

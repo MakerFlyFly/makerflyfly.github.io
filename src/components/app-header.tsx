@@ -22,7 +22,7 @@ export function AppHeader({ searchItems }: AppHeaderProps) {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link className="brand-link" href="/">
+        <Link className="brand-link" href="/" prefetch={false}>
           <span>MakerFly.dev</span>
         </Link>
 
@@ -37,6 +37,7 @@ export function AppHeader({ searchItems }: AppHeaderProps) {
                 className={active ? "nav-link active" : "nav-link"}
                 href={item.href}
                 key={item.href}
+                prefetch={false}
                 aria-current={active ? "page" : undefined}
               >
                 <Icon size={18} strokeWidth={2.3} />

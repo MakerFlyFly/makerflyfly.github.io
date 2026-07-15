@@ -1,0 +1,9 @@
+{
+  "title": "MST笔记总结",
+  "date": "2026-07-15",
+  "summary": "A spanning tree of a graph is just a subgraph that contains all the vertices and is a tree.",
+  "tags": [
+    "DataStructures"
+  ],
+  "category": "#DataStructures"
+}

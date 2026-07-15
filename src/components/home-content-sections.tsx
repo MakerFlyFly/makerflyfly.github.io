@@ -30,7 +30,7 @@ export function HomeContentSections() {
           <p className="home-section-kicker">Projects</p>
           <h2>项目</h2>
         </div>
-        <MotionLink className="home-section-link" href="/projects" {...buttonTap(reduced)}>
+        <MotionLink className="home-section-link" href="/projects" prefetch={false} {...buttonTap(reduced)}>
           全部项目
           <ArrowRight size={16} />
         </MotionLink>
@@ -76,7 +76,7 @@ export function HomeContentSections() {
           <p className="home-section-kicker">Articles</p>
           <h2>文章</h2>
         </div>
-        <MotionLink className="home-section-link" href="/blog" {...buttonTap(reduced)}>
+        <MotionLink className="home-section-link" href="/blog" prefetch={false} {...buttonTap(reduced)}>
           全部文章
           <ArrowRight size={16} />
         </MotionLink>
@@ -88,20 +88,19 @@ export function HomeContentSections() {
         viewport={motionViewport}
       >
         {previewArticles.length > 0 ? (
-          previewArticles.map((article, index) => (
-            <MotionLink
+          previewArticles.map((article) => (
+            <Link
               className="home-article-row"
               href={`/blog/${article.slug}`}
               key={article.slug}
-              style={{ transitionDelay: `${index * 35}ms` }}
-              {...buttonTap(reduced)}
+              prefetch={false}
             >
               <time dateTime={article.date}>{article.date.slice(5)}</time>
               <span>
                 <strong>{article.title}</strong>
                 <small>{article.summary}</small>
               </span>
-            </MotionLink>
+            </Link>
           ))
         ) : (
           <div className="home-article-row empty-state">
@@ -172,7 +171,7 @@ function SmartProjectLink({
 }) {
   if (href.startsWith("/")) {
     return (
-      <MotionLink className={className} href={href} {...buttonTap(reduced)}>
+      <MotionLink className={className} href={href} prefetch={false} {...buttonTap(reduced)}>
         {children}
       </MotionLink>
     );

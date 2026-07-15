@@ -132,6 +132,7 @@ function SearchGroup({ title, results, onNavigate }: SearchGroupProps) {
             className="search-result"
             href={result.href}
             key={`${result.type}-${result.href}`}
+            prefetch={false}
             onClick={onNavigate}
           >
             <Icon size={18} />
