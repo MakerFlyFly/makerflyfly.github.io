@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, ExternalLink, GitBranch, Package } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
 import { MotionCard } from "@/components/motion-primitives";
-import { articleRowHover, buttonTap, cardReveal, motionViewport } from "@/lib/motion-presets";
+import { buttonTap, cardReveal, motionViewport } from "@/lib/motion-presets";
 import { projects, visibleArticles } from "@/data/content";
 import type { ProjectRecord } from "@/types/content";
 
@@ -88,22 +88,18 @@ export function HomeContentSections() {
         viewport={motionViewport}
       >
         {previewArticles.length > 0 ? (
-          previewArticles.map((article) => (
+          previewArticles.map((article, index) => (
             <MotionLink
               className="home-article-row"
               href={`/blog/${article.slug}`}
               key={article.slug}
               prefetch={false}
-              {...articleRowHover(reduced)}
+              style={{ transitionDelay: `${index * 35}ms` }}
+              {...buttonTap(reduced)}
             >
               <time dateTime={article.date}>{article.date.slice(5)}</time>
               <span>
-                <strong className="article-row-title">
-                  <span className="article-row-title-text">{article.title}</span>
-                  <span aria-hidden="true" className="article-row-title-gradient">
-                    {article.title}
-                  </span>
-                </strong>
+                <strong>{article.title}</strong>
                 <small>{article.summary}</small>
               </span>
             </MotionLink>

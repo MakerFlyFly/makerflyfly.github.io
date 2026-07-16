@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { MotionButton, MotionLabel } from "@/components/motion-primitives";
-import { articleRowHover, cardReveal, motionViewport, pageEnter } from "@/lib/motion-presets";
+import { cardReveal, motionViewport, pageEnter } from "@/lib/motion-presets";
 import { groupBlogsByYear } from "@/lib/blog-index";
 import { readFileAsText } from "@/lib/file-utils";
 import { getErrorMessage } from "@/lib/utils";
@@ -195,74 +195,43 @@ export default function BlogPage() {
                     transition: { duration: 0.26, delay: index * 0.025 },
                   };
 
-                  if (!editing) {
-                    return (
-                      <MotionLink
-                        className="blog-list-item"
-                        href={`/blog/${item.slug}`}
-                        key={item.slug}
-                        prefetch={false}
-                        {...itemRevealProps}
-                        {...articleRowHover(reduced)}
-                      >
-                        <time dateTime={item.date}>{item.date.slice(5)}</time>
-
-                        <div>
-                          <span className="blog-title-link">
-                            <span className="article-row-title-text">{item.title}</span>
-                            <span aria-hidden="true" className="article-row-title-gradient">
-                              {item.title}
-                            </span>
-                          </span>
-                          <p>{item.summary}</p>
-                          <div className="tag-row">
-                            {item.tags.map((tag) => (
-                              <span className="tag" key={tag}>
-                                #{tag}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </MotionLink>
-                    );
-                  }
-
                   return (
                     <motion.article
                       className={checked ? "blog-list-item selected" : "blog-list-item"}
                       key={item.slug}
                       layout={editing && !reduced ? "position" : false}
                       {...itemRevealProps}
-                      {...articleRowHover(reduced)}
                     >
-                      <input
-                        checked={checked}
-                        className="select-check"
-                        type="checkbox"
-                        onChange={(event) => {
-                          setSelected((current) => {
-                            const next = new Set(current);
-                            if (event.target.checked) {
-                              next.add(item.slug);
-                            } else {
-                              next.delete(item.slug);
-                            }
-                            return next;
-                          });
-                        }}
-                      />
+                      {editing ? (
+                        <input
+                          checked={checked}
+                          className="select-check"
+                          type="checkbox"
+                          onChange={(event) => {
+                            setSelected((current) => {
+                              const next = new Set(current);
+                              if (event.target.checked) {
+                                next.add(item.slug);
+                              } else {
+                                next.delete(item.slug);
+                              }
+                              return next;
+                            });
+                          }}
+                        />
+                      ) : (
+                        <time dateTime={item.date}>{item.date.slice(5)}</time>
+                      )}
 
                       <div>
-                        <Link
+                        <MotionLink
                           className="blog-title-link"
                           href={`/blog/${item.slug}`}
                           prefetch={false}
+                          {...(!reduced ? { whileHover: { x: 2 } } : {})}
                         >
-                          <span className="article-row-title-text">{item.title}</span>
-                          <span aria-hidden="true" className="article-row-title-gradient">
-                            {item.title}
-                          </span>
-                        </Link>
+                          {item.title}
+                        </MotionLink>
                         <p>{item.summary}</p>
                         <div className="tag-row">
                           {item.tags.map((tag) => (
