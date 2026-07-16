@@ -88,21 +88,19 @@ export function HomeContentSections() {
         viewport={motionViewport}
       >
         {previewArticles.length > 0 ? (
-          previewArticles.map((article, index) => (
-            <MotionLink
+          previewArticles.map((article) => (
+            <Link
               className="home-article-row"
               href={`/blog/${article.slug}`}
               key={article.slug}
               prefetch={false}
-              style={{ transitionDelay: `${index * 35}ms` }}
-              {...buttonTap(reduced)}
             >
               <time dateTime={article.date}>{article.date.slice(5)}</time>
               <span>
                 <strong>{article.title}</strong>
                 <small>{article.summary}</small>
               </span>
-            </MotionLink>
+            </Link>
           ))
         ) : (
           <div className="home-article-row empty-state">

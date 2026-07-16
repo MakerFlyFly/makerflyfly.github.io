@@ -224,14 +224,13 @@ export default function BlogPage() {
                       )}
 
                       <div>
-                        <MotionLink
+                        <Link
                           className="blog-title-link"
                           href={`/blog/${item.slug}`}
                           prefetch={false}
-                          {...(!reduced ? { whileHover: { x: 2 } } : {})}
                         >
                           {item.title}
-                        </MotionLink>
+                        </Link>
                         <p>{item.summary}</p>
                         <div className="tag-row">
                           {item.tags.map((tag) => (
