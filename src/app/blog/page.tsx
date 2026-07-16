@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { MotionButton, MotionLabel } from "@/components/motion-primitives";
-import { cardReveal, motionViewport, pageEnter } from "@/lib/motion-presets";
+import { articleRowHover, cardReveal, motionViewport, pageEnter } from "@/lib/motion-presets";
 import { groupBlogsByYear } from "@/lib/blog-index";
 import { readFileAsText } from "@/lib/file-utils";
 import { getErrorMessage } from "@/lib/utils";
@@ -188,37 +188,69 @@ export default function BlogPage() {
               <div className="blog-list">
                 {group.items.map((item, index) => {
                   const checked = selected.has(item.slug);
+                  const itemRevealProps = {
+                    initial: reduced ? { opacity: 0 } : { opacity: 0, y: 8 },
+                    whileInView: reduced ? { opacity: 1 } : { opacity: 1, y: 0 },
+                    viewport: motionViewport,
+                    transition: { duration: 0.26, delay: index * 0.025 },
+                  };
+
+                  if (!editing) {
+                    return (
+                      <MotionLink
+                        className="blog-list-item"
+                        href={`/blog/${item.slug}`}
+                        key={item.slug}
+                        prefetch={false}
+                        {...itemRevealProps}
+                        {...articleRowHover(reduced)}
+                      >
+                        <time dateTime={item.date}>{item.date.slice(5)}</time>
+
+                        <div>
+                          <span className="blog-title-link">
+                            <span className="article-row-title-text">{item.title}</span>
+                            <span aria-hidden="true" className="article-row-title-gradient">
+                              {item.title}
+                            </span>
+                          </span>
+                          <p>{item.summary}</p>
+                          <div className="tag-row">
+                            {item.tags.map((tag) => (
+                              <span className="tag" key={tag}>
+                                #{tag}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </MotionLink>
+                    );
+                  }
 
                   return (
                     <motion.article
                       className={checked ? "blog-list-item selected" : "blog-list-item"}
                       key={item.slug}
-                      layout={!reduced}
-                      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
-                      whileInView={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
-                      viewport={motionViewport}
-                      transition={{ duration: 0.26, delay: index * 0.025 }}
+                      layout={editing && !reduced ? "position" : false}
+                      {...itemRevealProps}
+                      {...articleRowHover(reduced)}
                     >
-                      {editing ? (
-                        <input
-                          checked={checked}
-                          className="select-check"
-                          type="checkbox"
-                          onChange={(event) => {
-                            setSelected((current) => {
-                              const next = new Set(current);
-                              if (event.target.checked) {
-                                next.add(item.slug);
-                              } else {
-                                next.delete(item.slug);
-                              }
-                              return next;
-                            });
-                          }}
-                        />
-                      ) : (
-                        <time dateTime={item.date}>{item.date.slice(5)}</time>
-                      )}
+                      <input
+                        checked={checked}
+                        className="select-check"
+                        type="checkbox"
+                        onChange={(event) => {
+                          setSelected((current) => {
+                            const next = new Set(current);
+                            if (event.target.checked) {
+                              next.add(item.slug);
+                            } else {
+                              next.delete(item.slug);
+                            }
+                            return next;
+                          });
+                        }}
+                      />
 
                       <div>
                         <Link
@@ -226,7 +258,10 @@ export default function BlogPage() {
                           href={`/blog/${item.slug}`}
                           prefetch={false}
                         >
-                          {item.title}
+                          <span className="article-row-title-text">{item.title}</span>
+                          <span aria-hidden="true" className="article-row-title-gradient">
+                            {item.title}
+                          </span>
                         </Link>
                         <p>{item.summary}</p>
                         <div className="tag-row">

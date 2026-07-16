@@ -10,6 +10,7 @@ export const motionDurations = {
   card: 0.34,
   panel: 0.2,
   button: 0.16,
+  articleRow: 0.18,
 } as const;
 
 export function pageEnter(reducedMotion: boolean, delay = 0) {
@@ -63,5 +64,21 @@ export function buttonTap(reducedMotion: boolean) {
         whileHover: { scale: 1.03 },
         whileTap: { scale: 0.97 },
         transition: { duration: motionDurations.button, ease: motionEase },
+      };
+}
+
+export function articleRowHover(reducedMotion: boolean) {
+  return reducedMotion
+    ? {}
+    : {
+        whileHover: {
+          y: -3,
+          scale: 1.01,
+          transition: { duration: motionDurations.articleRow, ease: motionEase },
+        },
+        whileTap: {
+          scale: 0.99,
+          transition: { duration: motionDurations.button, ease: motionEase },
+        },
       };
 }
