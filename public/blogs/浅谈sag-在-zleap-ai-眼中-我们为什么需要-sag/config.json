@@ -1,0 +1,9 @@
+{
+  "title": "浅谈SAG：在 Zleap AI 眼中，我们为什么需要 SAG？",
+  "date": "2026-08-23",
+  "summary": "SAG，号称是一套可以替代传统 RAG 与 GraphRAG 的原创检索架构。",
+  "tags": [
+    "RAG"
+  ],
+  "category": "RAG"
+}
