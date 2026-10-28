@@ -1,5 +1,17 @@
 [
   {
+    "slug": "kaggle之旅-rsna-膝关节异常检测比赛总结",
+    "title": "Kaggle之旅—— RSNA 膝关节异常检测比赛总结",
+    "date": "2026-10-28",
+    "summary": "公榜 0.958，私榜 0.943，最终排名 521 / 6425，top 9%，铜牌。",
+    "tags": [
+      "Transformer",
+      "机器学习",
+      "弱监督学习"
+    ],
+    "category": "Kaggle"
+  },
+  {
     "slug": "浅谈sag-在-zleap-ai-眼中-我们为什么需要-sag",
     "title": "浅谈SAG：在 Zleap AI 眼中，我们为什么需要 SAG？",
     "date": "2026-08-23",
