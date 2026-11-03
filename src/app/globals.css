@@ -1549,6 +1549,11 @@ a.home-article-row:active {
   overflow-wrap: break-word;
 }
 
+.article-view ol {
+  list-style-type: decimal;
+  padding-inline-start: 1.5em;
+}
+
 .article-view code {
   border-radius: 8px;
   background: rgba(47, 203, 231, 0.12);
