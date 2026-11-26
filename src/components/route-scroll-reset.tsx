@@ -13,6 +13,14 @@ export function RouteScrollReset() {
       return;
     }
 
+    if (window.location.hash) {
+      // Restore the fragment inside the site's scroll container after navigation.
+      const frame = requestAnimationFrame(() => {
+        scrollRoot.querySelector(":target")?.scrollIntoView({ behavior: "instant" });
+      });
+      return () => cancelAnimationFrame(frame);
+    }
+
     const previousScrollBehavior = scrollRoot.style.scrollBehavior;
 
     scrollRoot.style.scrollBehavior = "auto";

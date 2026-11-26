@@ -13,6 +13,11 @@ interface GlobalSearchProps {
   items: SearchIndexItem[];
 }
 
+// Use native navigation for fragments so revisiting a cached route keeps one hash.
+function isLocalFragment(href: string) {
+  return href.startsWith("/") && href.includes("#");
+}
+
 export function GlobalSearch({ items }: GlobalSearchProps) {
   const router = useRouter();
   const reducedMotion = useReducedMotion();
@@ -29,7 +34,11 @@ export function GlobalSearch({ items }: GlobalSearchProps) {
     const firstResult = results[0];
     if (firstResult) {
       setIsOpen(false);
-      router.push(firstResult.href);
+      if (isLocalFragment(firstResult.href)) {
+        window.location.assign(firstResult.href);
+      } else {
+        router.push(firstResult.href);
+      }
     }
   };
 
@@ -126,13 +135,14 @@ function SearchGroup({ title, results, onNavigate }: SearchGroupProps) {
       <p className="search-group-title">{title}</p>
       {results.slice(0, 4).map((result) => {
         const Icon = result.type === "article" ? FileText : FolderKanban;
+        const ResultLink = isLocalFragment(result.href) ? "a" : Link;
 
         return (
-          <Link
+          <ResultLink
             className="search-result"
             href={result.href}
             key={`${result.type}-${result.href}`}
-            prefetch={false}
+            {...(ResultLink === Link ? { prefetch: false } : {})}
             onClick={onNavigate}
           >
             <Icon size={18} />
@@ -141,7 +151,7 @@ function SearchGroup({ title, results, onNavigate }: SearchGroupProps) {
               <span className="search-result-desc">{result.description}</span>
             </span>
             <span className="search-result-meta">{result.dateOrYear}</span>
-          </Link>
+          </ResultLink>
         );
       })}
     </div>

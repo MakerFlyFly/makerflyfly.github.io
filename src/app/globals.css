@@ -1880,6 +1880,8 @@ a.home-article-row:active {
 
 .editable-project-card {
   position: relative;
+  /* Account for the sticky header and the card's entrance animation. */
+  scroll-margin-block-start: 9rem;
   display: grid;
   grid-template-columns: 190px 1fr;
   gap: 18px;
@@ -1972,6 +1974,12 @@ a.home-article-row:active {
 .dialog-head button {
   width: 34px;
   height: 34px;
+}
+
+@media (max-width: 1120px) {
+  .editable-project-card {
+    scroll-margin-block-start: 15rem;
+  }
 }
 
 @media (max-width: 1020px) {

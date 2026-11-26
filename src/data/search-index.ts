@@ -22,7 +22,7 @@ export const searchIndex: SearchIndexItem[] = [
     type: "project" as const,
     title: project.name,
     description: project.description,
-    href: project.url || `/projects#${projectKey(project)}`,
+    href: project.url || `/projects/#${projectKey(project)}`,
     tags: project.tags,
     dateOrYear: String(project.year),
     searchableText: [
