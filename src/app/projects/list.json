@@ -3,7 +3,7 @@
     "name": "RSNA 膝关节 MRI 异常检测",
     "year": 2026,
     "description": "利用影像报告辅助训练，从一次膝关节 MRI 检查中预测 12 种异常。获 Kaggle 铜牌。",
-    "image": "/blogs/kaggle之旅-rsna-膝关节异常检测比赛总结/Z2.png",
+    "image": "/images/project/rsna-knee-mri.png",
     "url": "/blog/kaggle之旅-rsna-膝关节异常检测比赛总结/",
     "tags": ["医学影像", "弱监督学习"],
     "category": "Kaggle"
@@ -12,6 +12,7 @@
     "name": "Frhythom 模块化鞋履定制",
     "year": 2026,
     "description": "根据穿着场景，通过问卷或对话获得搭配建议，在 3D 工作台预览鞋面、鞋底等部件的组合。",
+    "image": "/images/project/frhythom-structure.jpg",
     "url": "",
     "tags": ["团队项目", "3D 定制"],
     "category": "应用开发"
@@ -20,6 +21,7 @@
     "name": "Biohub 细胞追踪",
     "year": 2026,
     "description": "在连续的三维显微影像中追踪细胞，识别分裂事件，重建细胞谱系。",
+    "image": "/images/project/biohub-cell-tracking.png",
     "url": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development",
     "tags": ["计算机视觉", "细胞追踪"],
     "category": "Kaggle"
@@ -28,6 +30,7 @@
     "name": "Kaggriculture 农场策略 Agent",
     "year": 2026,
     "description": "在农场经营模拟中安排采购、播种和日末库存变现，通过对局比较不同经营策略。",
+    "image": "/images/project/kaggriculture.png",
     "url": "https://www.kaggle.com/competitions/kaggriculture",
     "tags": ["策略模拟", "Agent"],
     "category": "Kaggle"
@@ -36,6 +39,7 @@
     "name": "Enveda 质谱分子鉴定",
     "year": 2026,
     "description": "根据质谱检索并排序候选分子，预测样本中化合物的二维结构。",
+    "image": "/images/project/enveda-casmi.png",
     "url": "https://www.kaggle.com/competitions/enveda-CASMI26-molecule-id-mass-spectra",
     "tags": ["分子检索", "进行中"],
     "category": "Kaggle"
