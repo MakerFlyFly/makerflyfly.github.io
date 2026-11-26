@@ -43,5 +43,14 @@
     "url": "https://www.kaggle.com/competitions/enveda-CASMI26-molecule-id-mass-spectra",
     "tags": ["分子检索", "进行中"],
     "category": "Kaggle"
+  },
+  {
+    "name": "Wi-Fi 人体活动识别",
+    "year": 2026,
+    "description": "利用 Wi-Fi 波束成形反馈区分站立和行走。从每个 1 秒信号窗口提取 12 项特征，用 XGBoost 分类。按采集会话留出 20% 作为测试集，分类准确率为 97.88%。",
+    "image": "/images/project/wifi-activity-recognition.jpg",
+    "url": "",
+    "tags": ["课程项目", "无线感知", "XGBoost"],
+    "category": "课程项目"
   }
 ]
